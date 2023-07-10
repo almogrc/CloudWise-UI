@@ -1,5 +1,4 @@
 
-import { useState } from 'react';
 
 export async function fetchPostRequest(url, requestBody){
     let data;
