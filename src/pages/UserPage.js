@@ -88,6 +88,8 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [openForm, setOpenForm] = useState(null);
+
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -110,7 +112,10 @@ export default function UserPage() {
     }
     setSelected([]);
   };
-
+  const handleNewVirtualMachineButtonClick = (event, name) => {
+    console.log("dsa");
+    setOpenForm(true);
+  }
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
@@ -157,11 +162,21 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             Virtual Machine
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill"/>} onClick={()=>handleNewVirtualMachineButtonClick()}>
             New Virtual Machine
           </Button>
         </Stack>
 
+        {openForm && <Popover
+                      id={"dsas"}
+                      open={openForm}
+                      anchorOrigin={{
+                      vertical: 'center',
+                      horizontal: 'center',
+                    }}>
+                    <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+                    </Popover>}
+        
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 

@@ -32,7 +32,7 @@ export default function Router() {
     {
       element: <MachineLayout />,
       children: [
-       {path: 'user',
+       {path: 'managerMachines',
        element: <UserPage />},
       ]
     },
