@@ -1,20 +1,25 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // @mui
 import {
+  Box,
   Card,
   Table,
   Stack,
   Paper,
   Avatar,
   Button,
+  Snackbar,
+  SnackbarContent,
+  Menu,
   Popover,
   Checkbox,
   TableRow,
   MenuItem,
   TableBody,
+  TextField,
   TableCell,
   Container,
   Typography,
@@ -31,6 +36,7 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
 
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -41,6 +47,24 @@ const TABLE_HEAD = [
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
+
+// ---------------------------------------------------------------------- popover code
+
+
+const Providers = [
+  {
+    value: 'azure',
+    label: 'Azure',
+    icon: '/assets/icons/ic_azure.svg',
+  },
+  {
+    value: 'aws',
+    label: 'AWS',
+    icon: '/assets/icons/ic_aws.svg',
+  },
+  
+];
+
 
 // ----------------------------------------------------------------------
 
@@ -74,22 +98,109 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
+
+  const [machineDNS, setDNS] = useState('');
+  const [machineName, setMachineName] = useState('');
+  const [openProviders, setOpenProviders] = useState('');
   const [open, setOpen] = useState(null);
-
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [openForm, setOpenPopup] = useState(null);
+  const [errorOpen, setErrorOpen] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorText, setErrorText] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedProvider, setSelectedProvider] = useState(Providers[0]);
 
-  const [openForm, setOpenForm] = useState(null);
+  const handleOpenProviders = (event) => {
+    setOpenProviders(event.currentTarget);
+  };
 
+  const handleCancel = (event) => {
+    handleClosePopup();
+  };
+
+  const handleClosePopup = () => {
+    setDNS('');
+    setMachineName('');
+    setOpenProviders('');
+    setErrorOpen(false);
+    setErrorText('');
+    setSelectedProvider(Providers[0]);
+    setOpenPopup(null);
+  };
+  
+  const isValidDNS = () => {
+    //  TODO
+    let valid = true;
+    if (machineDNS === 'kaka') {
+      valid = false;
+    }
+    return valid;
+  };
+
+  const isValidMachineName = () => { 
+    //  TODO
+    let valid = true;
+    if (machineDNS === 'kaka') {
+      valid = false;
+    }
+    return valid;
+  };
+
+  const isValidProvider = () => {
+    let valid = true;
+    valid = true;
+    //  TODO
+    return valid;
+  };
+
+  const handleSubmit = (event) => {
+    setIsSubmitting(true);
+    if (!machineDNS || !machineName || !selectedProvider) {
+      setErrorOpen(true);
+      setErrorText('Please fill in all the fields.');
+    } else if (!isValidDNS()) {
+      setErrorOpen(true);
+      setErrorText('Invalid DNS format.');
+    } else if (!isValidMachineName()) {
+      setErrorOpen(true);
+      setErrorText('Invalid Machine Name.');
+    } else if (!isValidProvider()) {
+      setErrorOpen(true);
+      setErrorText('Invalid Provider.');
+    } else {
+      setErrorOpen(false); // Clear the error state
+      setSuccessMessage('Machine added successfully!');
+      setSuccessOpen(true);
+      setErrorText('');
+      handleClosePopup();
+    }
+    setTimeout(() => {
+      setErrorOpen(false);
+      setErrorText('');
+      setIsSubmitting(false);
+    }, 2000);
+  };
+  
+  const handleCloseProviders = () => {
+    setOpenProviders('');
+  };
+  
+  const handleChangeMachineNameTextBox = (event) =>  {
+    setMachineName(event.target.value);
+  }
+  
+  const handleChangeDNSTextBox = (event) => {
+    setDNS(event.target.value);
+    console.log("Value changed:", event.target.value);
+  };
+  
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -112,10 +223,11 @@ export default function UserPage() {
     }
     setSelected([]);
   };
+  
   const handleNewVirtualMachineButtonClick = (event, name) => {
-    console.log("dsa");
-    setOpenForm(true);
+    setOpenPopup(true);
   }
+
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
@@ -145,6 +257,20 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
+  const handleProviderSelect = (option) => {
+    setSelectedProvider(option);
+    handleCloseProviders();
+  };
+
+  const handleCloseError = () => {
+    setErrorOpen(false);
+    setErrorText('');
+  };
+
+  const handleCloseSuccess = () => {
+    setSuccessOpen(false);
+  };
+  
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
@@ -154,7 +280,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title>User | Minimal UI</title>
       </Helmet>
 
       <Container>
@@ -162,20 +288,125 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             Virtual Machine
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill"/>} onClick={()=>handleNewVirtualMachineButtonClick()}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleNewVirtualMachineButtonClick}>
             New Virtual Machine
           </Button>
         </Stack>
 
-        {openForm && <Popover
-                      id={"dsas"}
-                      open={openForm}
-                      anchorOrigin={{
-                      vertical: 'center',
-                      horizontal: 'center',
-                    }}>
-                    <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
-                    </Popover>}
+        {openForm && (
+          <Popover
+            id="mainPop"
+            open={openForm}
+            anchorOrigin={{
+              vertical: 'center',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'center',
+              horizontal: 'center',
+            }}
+            BackdropProps={{
+              sx: { backdropFilter: 'blur(4px)' },
+            }}
+          >
+            <Typography sx={{ p: 2 }}>Please enter new machine details:</Typography>
+            <Typography sx={{ p: 2 }}>
+              <TextField label="DNS" type="text" value={machineDNS} onChange={handleChangeDNSTextBox} style={{ marginLeft: '13px' }} />
+            </Typography>
+            <Typography sx={{ p: 2 }}>
+              <TextField label="Machine's Name" type="text" value={machineName} onChange={handleChangeMachineNameTextBox} style={{ marginLeft: '13px' }} />
+            </Typography>
+            <Typography sx={{ p: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="subtitle1" sx={{ marginRight: '10px', marginLeft: '20px', flexGrow: 1, textAlign: 'left' }}>
+                  Provider:
+                </Typography>
+                <Button onClick={handleOpenProviders} sx={{ marginRight: '40px', padding: 0, width: 70, height: 50 }}>
+                  <img src={selectedProvider.icon} alt={selectedProvider.label} />
+                </Button>
+              </Box>
+              <Menu
+                open={Boolean(openProviders)}
+                anchorEl={openProviders}
+                onClose={handleCloseProviders}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                sx={{ marginTop: '8px' }}
+              >
+                <Stack sx={{ minWidth: 100 }}>
+                  {Providers.map((option) => (
+                    <MenuItem
+                      key={option.value}
+                      selected={option.value === selectedProvider.value}
+                      onClick={() => handleProviderSelect(option)}
+                    >
+                      <Box component="img" alt={option.label} src={option.icon} sx={{ width: 28, mr: 2 }} />
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Stack>
+              </Menu>
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography sx={{ p: 2 }}>
+                <Button variant="contained" color="error" onClick={handleCancel} sx={{ marginLeft: '30px' }}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit}
+                  sx={{ marginLeft: '30px' }}
+                  disabled={isSubmitting}
+                >
+                  Submit
+                </Button>
+              </Typography>
+            </Box>
+            <Snackbar
+              open={errorOpen}
+              autoHideDuration={2400}
+              onClose={handleCloseError}
+              anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+            >
+              <SnackbarContent
+                style={{
+                  backgroundColor: 'red',
+                  fontWeight: 'bold',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+                message={<span id="client-snackbar">{errorText}</span>}
+              />
+            </Snackbar>
+          </Popover>
+        )}
+
+        
+            <Snackbar
+              open={successOpen}
+              autoHideDuration={3000}
+              onClose={handleCloseSuccess}
+              anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+            >
+              <SnackbarContent
+                style={{
+                  backgroundColor: 'green',
+                  fontWeight: 'bold',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+                message={<span id="client-snackbar">{successMessage}</span>}
+              />
+            </Snackbar>
         
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
