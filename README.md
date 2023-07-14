@@ -19,7 +19,7 @@
 ## Page demo
 
 - [Dashboard](https://minimal-kit-react.vercel.app/dashboard/app)
-- [Users](https://minimal-kit-react.vercel.app/dashboard/user)
+- [Users](https://minimal-kit-react.vercel.app/managerMachines)
 - [Product](https://minimal-kit-react.vercel.app/dashboard/products)
 - [Blog](https://minimal-kit-react.vercel.app/dashboard/blog)
 - [Login](https://minimal-kit-react.vercel.app/login)
