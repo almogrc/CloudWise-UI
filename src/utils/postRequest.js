@@ -1,5 +1,4 @@
 
-
 export async function fetchPostRequest(url, requestBody){
     let data;
     let isPending;    
@@ -7,6 +6,7 @@ export async function fetchPostRequest(url, requestBody){
     try{
      await fetch(url, {
         method: "POST",
+        credentials: 'include',
         headers: {
           "Content-Type": "application/json"
         },
@@ -17,12 +17,14 @@ export async function fetchPostRequest(url, requestBody){
                 throw Error(response.message)
             }
             response.json();
+
         })
         .then(bodyData => {
             console.log("Response:", data);
             data = bodyData;
             isPending = false;
             errorMsg = null;
+
         })
     }catch(e){
         throw Error(e.message);

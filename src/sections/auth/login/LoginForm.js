@@ -28,7 +28,8 @@ export default function LoginForm() {
 
   const handleClick = async () => {
     try{
-      const {data, isPending, error} = await fetchPostRequest(`${baseUrl}${loginEndpoint}`, {Email:email,Password:password});
+      const {data, isPending, error} = await fetchPostRequest(`${baseUrl}${loginEndpoint}`, {Email:email,Password:password, SessionId:"1"});
+      navigate('/managerMachines');
     }catch(e){
       setErrorMsg(e.message);
     }

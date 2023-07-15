@@ -2,12 +2,12 @@ export const isDevelopment = true;
 
 export const baseUrl = isDevelopment? "http://localhost:5001/api" : "http://";
 
-export const loginEndpoint = "/login";
+export const loginEndpoint = `/Connection/login`;
 
-export const connectionEndpoint =  "/connection";
+export const connectionEndpoint =  "/Connection";
 
-export const virtualMachineEndpoint =  "/virtualMachine";
+export const virtualMachineEndpoint =  "/VirtualMachine";
 
-export const addVirtualMachineEndpoint = `${virtualMachineEndpoint}/addVM`;
+export const addVirtualMachineEndpoint = `/VirtualMachine/addVM`;
 
-export const removeVirtualMachineEndpoint =  `${virtualMachineEndpoint}/removeVM`;
+export const removeVirtualMachineEndpoint =  `/VirtualMachine/removeVM`;
