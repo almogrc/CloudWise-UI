@@ -3,6 +3,8 @@ import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+
 // @mui
 import {
   Box,
@@ -28,7 +30,17 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
+
+// constants
+
+import { addVirtualMachineEndpoint, baseUrl } from '../utils/constant';
+
+// HTTP functions
+
+import { fetchPostRequest } from '../utils/postRequest';
+
 // components
+
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
@@ -50,7 +62,6 @@ const TABLE_HEAD = [
 
 // ---------------------------------------------------------------------- popover code
 
-
 const Providers = [
   {
     value: 'azure',
@@ -66,7 +77,6 @@ const Providers = [
 
 const azureTableIcon = "/assets/icons/ic_azure_table.svg";
 const awsTableIcon = '/assets/icons/ic_aws.svg';
-
 
 // ----------------------------------------------------------------------
 
@@ -163,7 +173,7 @@ export default function UserPage() {
   const isValidMachineName = () => { 
     //  TODO
     let valid = true;
-    if (machineDNS === 'kaka') {
+    if (machineName === 'kaka') {
       valid = false;
     }
     return valid;
@@ -176,8 +186,10 @@ export default function UserPage() {
     return valid;
   };
 
-  const handleSubmit = (event) => {
+  const  handleSubmit = async (event) => {
+
     setIsSubmitting(true);
+
     if (!machineDNS || !machineName || !selectedProvider) {
       setErrorOpen(true);
       setErrorText('Please fill in all the fields.');
@@ -191,11 +203,18 @@ export default function UserPage() {
       setErrorOpen(true);
       setErrorText('Invalid Provider.');
     } else {
-      setErrorOpen(false); // Clear the error state
-      setSuccessMessage('Machine added successfully!');
-      setSuccessOpen(true);
-      setErrorText('');
-      handleClosePopup();
+      
+      try{
+        const {data, isPending, error} = await fetchPostRequest(`${baseUrl}${addVirtualMachineEndpoint}`, {Name:machineName,DNS:machineDNS,Provider:selectedProvider.value});
+        setErrorOpen(false); 
+        setSuccessMessage('Machine added successfully!');
+        setSuccessOpen(true);
+        setErrorText('');
+        handleClosePopup();
+      }catch(e){
+        setErrorOpen(true);
+        setErrorText(e.message);
+      }
     }
     setTimeout(() => {
       setErrorOpen(false);

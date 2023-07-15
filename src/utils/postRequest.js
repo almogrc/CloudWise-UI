@@ -14,7 +14,7 @@ export async function fetchPostRequest(url, requestBody){
       })
         .then(response => {
             if(!response.ok){
-                throw Error("login failed")
+                throw Error(response.message)
             }
             response.json();
         })

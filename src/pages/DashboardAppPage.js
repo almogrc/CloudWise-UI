@@ -22,6 +22,7 @@ import {
 
 export default function DashboardAppPage() {
   const theme = useTheme();
+  const machineName = "BLA-BLA" // TODO
 
   return (
     <>
@@ -31,16 +32,16 @@ export default function DashboardAppPage() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back
+          Machine Name: {machineName}
         </Typography>
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Weekly Sales" total={714000} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Ram Capasity" total={714000} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="Memory Capasity" total={1352831} color="info" icon={'ant-design:apple-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
@@ -70,22 +71,28 @@ export default function DashboardAppPage() {
               ]}
               chartData={[
                 {
-                  name: 'Team A',
-                  type: 'column',
+                  name: 'CPU 1',
+                  type: 'line',
                   fill: 'solid',
                   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
                 },
                 {
-                  name: 'Team B',
-                  type: 'area',
-                  fill: 'gradient',
+                  name: 'CPU 2',
+                  type: 'line',
+                  fill: 'solid',
                   data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
                 },
                 {
-                  name: 'Team C',
+                  name: 'CPU 3',
                   type: 'line',
                   fill: 'solid',
                   data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
+                },
+                {
+                  name: 'CPU 4',
+                  type: 'line',
+                  fill: 'solid',
+                  data: [14, 13, 25,64, 52, 20, 11, 9, 63,14, 11],
                 },
               ]}
             />
@@ -93,9 +100,9 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} md={6} lg={4}>
             <AppCurrentVisits
-              title="Current Visits"
+              title="RAM Usage"
               chartData={[
-                { label: 'America', value: 4344 },
+                { label: 'America', value: 9000 },
                 { label: 'Asia', value: 5435 },
                 { label: 'Europe', value: 1443 },
                 { label: 'Africa', value: 4443 },

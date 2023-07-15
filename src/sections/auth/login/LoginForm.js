@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Typography} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-
+import { loginEndpoint, baseUrl } from '../../../utils/constant';
 import {fetchPostRequest} from '../../../utils/postRequest';
 // components
 import Iconify from '../../../components/iconify';
+
+
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +28,7 @@ export default function LoginForm() {
 
   const handleClick = async () => {
     try{
-      const {data, isPending, error} = await fetchPostRequest("http://localhost:5001/api/login", {Email:email,Password:password});
+      const {data, isPending, error} = await fetchPostRequest(`${baseUrl}${loginEndpoint}`, {Email:email,Password:password});
     }catch(e){
       setErrorMsg(e.message);
     }
