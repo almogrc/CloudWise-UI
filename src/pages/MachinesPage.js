@@ -80,7 +80,7 @@ const awsTableIcon = '/assets/icons/ic_aws.svg';
 
 // ----------------------------------------------------------------------
 
-const username = "Gil Kanti";
+const username = "USERNAME";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -568,11 +568,6 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
         <MenuItem sx={{ color: 'error.main' }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Remove
