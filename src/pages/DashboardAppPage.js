@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -31,7 +32,17 @@ import {
 export default function DashboardAppPage() {
 
   const { setTimeFrame } = useTimeFrame(); 
+  const [machineName, setMachineName] = useState('');
+  const location = useLocation();
 
+  const getMachineNameFromUrl = () => {
+      // Access the pathname from the location object
+    const currentPathname = location.pathname;
+    const pathSegments = currentPathname.split('/');
+    const lastSegment = pathSegments[pathSegments.length - 1];
+    // need to check vm list of the client 
+    setMachineName(lastSegment);
+  }
 
   const handleTimeFrameChange = (newTimeFrame) => {
     setTimeFrame(newTimeFrame);
@@ -39,7 +50,6 @@ export default function DashboardAppPage() {
 
 
   const theme = useTheme();
-  const machineName = "BLA-BLA" // TODO
   const dataPages = [
     { name: 'Page A', uv: 400, pv: 2400, amt: 2400 },
     { name: 'Page B', uv: 200, pv: 2300, amt: 2100 },
@@ -83,7 +93,10 @@ export default function DashboardAppPage() {
     animation: true,
   };
 
-  
+  useEffect(() => {
+    getMachineNameFromUrl();
+  },[]);
+
   return (
     <>
       <Helmet>

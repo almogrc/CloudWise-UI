@@ -20,7 +20,7 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
+        { path: ':machineId', element: <DashboardAppPage /> },
         { path: 'forecasts', element: <ForecastsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],

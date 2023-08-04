@@ -147,7 +147,7 @@ const fetchMachineDataList = async () => {
     if(row !== selectedRow){
       setSelectedRow(row === selectedRow ? null : row);
     }else{
-      navigate('/dashboard/app');
+      navigate(`/dashboard/${row.name}`);
       setSelectedRow(row === selectedRow ? null : row);
     }
   };
