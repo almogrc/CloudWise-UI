@@ -1,27 +1,24 @@
-
-export async function fetchPostRequest(url, requestBody){
+export async function fetchGetRequest(url){
     let data;
     let isPending;    
     let errorMsg = null;
     try{
      await fetch(url, {
-        method: "POST",
         credentials: 'include',
         headers: {
+          "Accept": "application/json",
           "Content-Type": "application/json"
-        },
-        body: JSON.stringify(requestBody)
+        }
       })
         .then(response => {
             if(!response.ok){
                 throw Error(response.message)
             }
             return response.json();
-
         })
         .then(bodyData => {
-            console.log("Response:", data);
             data = bodyData;
+            console.log("Response:", data);
             isPending = false;
             errorMsg = null;
 

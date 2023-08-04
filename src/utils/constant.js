@@ -11,3 +11,5 @@ export const virtualMachineEndpoint =  "/VirtualMachine";
 export const addVirtualMachineEndpoint = `/VirtualMachine/addVM`;
 
 export const removeVirtualMachineEndpoint =  `/VirtualMachine/removeVM`;
+
+export const getAllVMs = '/VirtualMachine/GetAllVMs';

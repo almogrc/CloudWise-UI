@@ -24,7 +24,6 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
-  import './design.css';
 
 
 // ----------------------------------------------------------------------

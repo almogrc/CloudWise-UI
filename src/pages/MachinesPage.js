@@ -33,11 +33,12 @@ import {
 
 // constants
 
-import { addVirtualMachineEndpoint, baseUrl } from '../utils/constant';
+import { addVirtualMachineEndpoint, getAllVMs, baseUrl } from '../utils/constant';
 
 // HTTP functions
 
 import { fetchPostRequest } from '../utils/postRequest';
+import { fetchGetRequest } from '../utils/getRequest';
 
 // components
 
@@ -98,18 +99,18 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
+// function applySortFilter(array, comparator, query) {
+//   const stabilizedThis = array.map((el, index) => [el, index]);
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0]);
+//     if (order !== 0) return order;
+//     return a[1] - b[1];
+//   });
+//   if (query) {
+//     return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+//   }
+//   return stabilizedThis.map((el) => el[0]);
+// }
 
 export default function UserPage() {
 
@@ -131,8 +132,16 @@ export default function UserPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState(Providers[0]);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [machineDataList, setMachineDataList] = useState([]);
 
   const navigate = useNavigate();
+
+const fetchMachineDataList = async () => {
+    const {data, isPending, error} = await fetchGetRequest(`${baseUrl}${getAllVMs}`);
+    setMachineDataList(data);
+    console.log(data);
+    console.log(Array.isArray(data)); 
+  };
 
   const handleRowClick = (row) => {
     if(row !== selectedRow){
@@ -251,7 +260,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = machineDataList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -304,12 +313,14 @@ export default function UserPage() {
   const handleCloseSuccess = () => {
     setSuccessOpen(false);
   };
-  
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - machineDataList.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  // const filteredUsers = applySortFilter(machineDataList, getComparator(order, orderBy), filterName);
+  const isNotFound = !machineDataList.length && !!filterName;
 
-  const isNotFound = !filteredUsers.length && !!filterName;
+  useEffect(() => {
+    fetchMachineDataList();   
+  },[]);
 
   return (
     <>
@@ -408,11 +419,11 @@ export default function UserPage() {
                 </Button>
               </Typography>
             </Box>
-            <Snackbar
+            {errorOpen && <Snackbar
               open={errorOpen}
               autoHideDuration={3000}
               onClose={handleCloseError}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'top' }}
             >
               <SnackbarContent
                 style={{
@@ -424,7 +435,7 @@ export default function UserPage() {
                 }}
                 message={<span id="client-snackbar">{errorText}</span>}
               />
-            </Snackbar>
+            </Snackbar> }
           </Popover>
         )}
 
@@ -457,14 +468,14 @@ export default function UserPage() {
       order={order}
       orderBy={orderBy}
       headLabel={TABLE_HEAD}
-      rowCount={USERLIST.length}
+      rowCount={machineDataList.length}
       numSelected={selected.length}
       onRequestSort={handleRequestSort}
       onSelectAllClick={handleSelectAllClick}
     />
     <TableBody>
-      {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-        const { name, role, status, company, avatarUrl } = row;
+      {machineDataList.map((row) => {
+        const { name, supplier, address, thresholds, alerts} = row;
 
         return (
           <TableRow
@@ -476,25 +487,20 @@ export default function UserPage() {
           >
             <TableCell component="th" scope="row" padding="none">
               <Stack direction="row" alignItems="center" spacing={1} margin={1}>
-                <Avatar alt={name} src={avatarUrl} />
                 <Typography variant="subtitle2" noWrap>
                   {name}
                 </Typography>
               </Stack>
             </TableCell>
 
-            <TableCell align="left">{company}</TableCell>
+            <TableCell align="left">{address}</TableCell>
 
             <TableCell align="left">
-              {role === 'Azure' && <img src={azureTableIcon} alt="Azure" height={22} />}
-              {role === 'AWS' && <img src={awsTableIcon} alt="AWS" height={30} />}
+              {supplier === 'Azure' && <img src={azureTableIcon} alt="Azure" height={22} />}
+              {supplier === 'AWS' && <img src={awsTableIcon} alt="AWS" height={30} />}
             </TableCell>
 
-            <TableCell align="left">
-              <Label color={((status === 'closed' || status === 'not connected') && 'error') || 'success'}>
-                {sentenceCase(status)}
-              </Label>
-            </TableCell>
+         
 
             <TableCell align="right">
               <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
@@ -541,7 +547,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={machineDataList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
