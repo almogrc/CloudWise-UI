@@ -1,16 +1,22 @@
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
+
+// constants
+import { RamUsageUrl, CPUUsageUrl, NetworkUrl } from '../utils/constant';
+
 // components
 import BarChart from '../Charts/BarChart';
 import LineChart from '../Charts/LineChart';
 import { useTimeFrame } from '../TimeFrameContext';
 import Iconify from '../components/iconify';
-
+import DateSelector from '../components/DateSelector';
+import CPUGauge from '../Charts/GaugeChart';
 
 // sections
 import {
@@ -18,13 +24,12 @@ import {
   AppNewsUpdate,
   AppOrderTimeline,
   AppCurrentVisits,
-  AppWebsiteVisits,
+  TimeSeriesGraph,
   AppTrafficBySite,
   AppWidgetSummary,
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
-  import './design.css';
 
 
 // ----------------------------------------------------------------------
@@ -32,7 +37,22 @@ import {
 export default function DashboardAppPage() {
 
   const { setTimeFrame } = useTimeFrame(); 
+  const [machineName, setMachineName] = useState(null);
+  const location = useLocation();
 
+  // body
+  const body = {
+    from : '2023-07-24T14:00:56Z',
+    to: '2023-07-24T19:30:45Z'
+  }
+  const getMachineNameFromUrl = () => {
+      // Access the pathname from the location object
+    const currentPathname = location.pathname;
+    const pathSegments = currentPathname.split('/');
+    const lastSegment = pathSegments[pathSegments.length - 1];
+    // need to check vm list of the client 
+    setMachineName(lastSegment);
+  }
 
   const handleTimeFrameChange = (newTimeFrame) => {
     setTimeFrame(newTimeFrame);
@@ -40,7 +60,6 @@ export default function DashboardAppPage() {
 
 
   const theme = useTheme();
-  const machineName = "BLA-BLA" // TODO
   const dataPages = [
     { name: 'Page A', uv: 400, pv: 2400, amt: 2400 },
     { name: 'Page B', uv: 200, pv: 2300, amt: 2100 },
@@ -84,7 +103,10 @@ export default function DashboardAppPage() {
     animation: true,
   };
 
-  
+  useEffect(() => {
+    getMachineNameFromUrl();
+  },[]);
+
   return (
     <>
       <Helmet>
@@ -96,71 +118,53 @@ export default function DashboardAppPage() {
           Machine Name: {machineName}
         </Typography>
 
+        <DateSelector/>
+        
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Ram Capasity" total={714000} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Ram Capacity" total={714000} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Memory Capasity" total={1352831} color="info" icon={'ant-design:apple-filled'} />
+            <CPUGauge cpuUsage={0.7} customSegmentStops={[0, 0.3, 0.8, 1]}/>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={3}>
+            <CPUGauge cpuUsage={0.7} customSegmentStops={[0, 0.2, 0.5, 1]}/>
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Item Orders" total={1723315} color="warning" icon={'ant-design:windows-filled'} />
+            <AppWidgetSummary title="Ram Capacity" total={714000} icon={'ant-design:android-filled'} />
           </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
-          </Grid>
-
-
-          <LineChart />
-
 
           <Grid item xs={12} md={6} lg={8}>
-            <AppWebsiteVisits
-              title="Website Visits"
+            {machineName && <TimeSeriesGraph
+              url={RamUsageUrl}
+              body={body}
+              machineName={machineName}
+              title="Ram Usage"
               subheader="(+43%) than last year"
-              chartLabels={[
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
-              ]}
-              chartData={[
-                {
-                  name: 'CPU 1',
-                  type: 'line',
-                  fill: 'solid',
-                  data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-                },
-                {
-                  name: 'CPU 2',
-                  type: 'line',
-                  fill: 'solid',
-                  data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-                },
-                {
-                  name: 'CPU 3',
-                  type: 'line',
-                  fill: 'solid',
-                  data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-                },
-                {
-                  name: 'CPU 4',
-                  type: 'line',
-                  fill: 'solid',
-                  data: [14, 13, 25,64, 52, 20, 11, 9, 63,14, 11],
-                },
-              ]}
-            />
+            />}
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={8}>
+            {machineName && <TimeSeriesGraph
+              url={CPUUsageUrl}
+              body={body}
+              machineName={machineName}
+              title="CPU Usage"
+              subheader="(+43%) than last year"
+            />}
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={8}>
+            {machineName && <TimeSeriesGraph
+              url={NetworkUrl}
+              body={body}
+              machineName={machineName}
+              title="Network"
+              subheader="(+43%) than last year"
+            />}
           </Grid>
           
           <Grid item xs={12} md={6} lg={4}>
