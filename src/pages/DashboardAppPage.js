@@ -15,7 +15,8 @@ import BarChart from '../Charts/BarChart';
 import LineChart from '../Charts/LineChart';
 import { useTimeFrame } from '../TimeFrameContext';
 import Iconify from '../components/iconify';
-
+import DateSelector from '../components/DateSelector';
+import CPUGauge from '../Charts/GaugeChart';
 
 // sections
 import {
@@ -117,21 +118,23 @@ export default function DashboardAppPage() {
           Machine Name: {machineName}
         </Typography>
 
+        <DateSelector/>
+        
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Ram Capasity" total={714000} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Ram Capacity" total={714000} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Memory Capasity" total={1352831} color="info" icon={'ant-design:apple-filled'} />
+            <CPUGauge cpuUsage={0.7} customSegmentStops={[0, 0.3, 0.8, 1]}/>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={3}>
+            <CPUGauge cpuUsage={0.7} customSegmentStops={[0, 0.2, 0.5, 1]}/>
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Item Orders" total={1723315} color="warning" icon={'ant-design:windows-filled'} />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
+            <AppWidgetSummary title="Ram Capacity" total={714000} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
