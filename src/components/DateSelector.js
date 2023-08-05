@@ -30,7 +30,7 @@ function DateSelector() {
         setLastWeekActive(false);
         setLast3MonthsActive(false);
         setTodayActive(!todayActive);
-        setSelectedStartingTimeFrame(dayjs());
+        setSelectedStartingTimeFrame(dayjs().startOf('day'));
         setSelectedEndingTimeFrame(dayjs());
       };
     
@@ -38,7 +38,7 @@ function DateSelector() {
         setTodayActive(false);
         setLast3MonthsActive(false);
         setLastWeekActive(!lastWeekActive);
-        setSelectedStartingTimeFrame(dayjs().subtract(1, 'week'));
+        setSelectedStartingTimeFrame(dayjs().subtract(1, 'week').startOf('day'));
         setSelectedEndingTimeFrame(dayjs());
       };
     
@@ -46,7 +46,7 @@ function DateSelector() {
         setTodayActive(false);
         setLastWeekActive(false);
         setLast3MonthsActive(!last3MonthsActive);
-        setSelectedStartingTimeFrame(dayjs().subtract(3, 'months'));
+        setSelectedStartingTimeFrame(dayjs().subtract(3, 'months').startOf('day'));
         setSelectedEndingTimeFrame(dayjs());
       };
     

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 const TimeFrameContext = createContext();
 export const TimeFrameProvider = ({ children }) => {
   // const [selectedTimeFrame, setSelectedTimeFrame] = useState(dayjs());
-  const [selectedTimeStartingFrame, setSelectedStartingTimeFrame] = useState(dayjs());
+  const [selectedTimeStartingFrame, setSelectedStartingTimeFrame] = useState(dayjs().startOf('day'));
   const [selectedTimeEndingFrame, setSelectedEndingTimeFrame] = useState(dayjs());
   
   return (

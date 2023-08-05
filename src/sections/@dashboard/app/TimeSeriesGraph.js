@@ -24,6 +24,7 @@ export default function TimeSeriesGraph({url, body, machineName, title, subheade
 
   const fetchChartDataList = async () => {
     const headers = {"Accept": "application/json","Content-Type": "application/json", 'machineId' : machineName};
+    console.log(body);
     const {data, isPending, error} = await fetchPostRequest(url, body, headers);
     // prepareDataToChart
     const chartDataTmp = [];
