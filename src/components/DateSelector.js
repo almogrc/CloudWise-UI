@@ -8,6 +8,8 @@ import { useTimeFrame } from '../TimeFrameContext';
 function DateSelector() {
     const {
         selectedTimeStartingFrame,
+        refreshCounter,
+        setRefreshCounter,
         setSelectedStartingTimeFrame,
         selectedTimeEndingFrame,
         setSelectedEndingTimeFrame,
@@ -23,7 +25,9 @@ function DateSelector() {
       
       
     const onApply = ()=>{
-        // setSelectedStartingTimeFrame(dayjs('2022-09-01'));
+      console.log(refreshCounter);
+      setRefreshCounter(refreshCounter => refreshCounter + 1);
+      console.log(refreshCounter);
     }
 
       const toggleToday = () => {
@@ -161,7 +165,7 @@ function DateSelector() {
           
             <DateTimePicker label="Ending Date" value={selectedTimeEndingFrame} style={{marginRight:'6px'}} onChange={handleEndingDateChange} />
           
-            <Button variant="contained" onClick={onApply()}  style={{ marginTop: '1px',marginLeft:'6px', fontSize: '1.3rem' }}>
+            <Button variant="contained" onClick={onApply}  style={{ marginTop: '1px',marginLeft:'6px', fontSize: '1.3rem' }}>
               APPLY
         </Button>
         </div>

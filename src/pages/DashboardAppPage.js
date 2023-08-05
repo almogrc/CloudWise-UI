@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 
 // constants
-import { RamUsageUrl, CPUUsageUrl, NetworkUrl } from '../utils/constant';
+import { RamUsageUrl, CPUUsageUrl, NetworkUrl, RamUsageProcessesUrl, CpuUserProcessesUrl, CpuSystemProcessesUrl, ReadBytesProcessesUrl } from '../utils/constant';
 
 // components
 import BarChart from '../Charts/BarChart';
@@ -136,7 +136,7 @@ export default function DashboardAppPage() {
             <AppWidgetSummary title="Ram Capacity" total={714000} icon={'ant-design:android-filled'} />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={6} lg={6}>
             {machineName && <TimeSeriesGraph
               url={RamUsageUrl}
               body={body}
@@ -146,7 +146,7 @@ export default function DashboardAppPage() {
             />}
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={6} lg={6}>
             {machineName && <TimeSeriesGraph
               url={CPUUsageUrl}
               body={body}
@@ -156,7 +156,7 @@ export default function DashboardAppPage() {
             />}
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={6} lg={6}>
             {machineName && <TimeSeriesGraph
               url={NetworkUrl}
               body={body}
@@ -165,7 +165,48 @@ export default function DashboardAppPage() {
               subheader="(+43%) than last year"
             />}
           </Grid>
+
+          <Grid item xs={12} md={6} lg={6}>
+            {machineName && <TimeSeriesGraph
+              url={RamUsageProcessesUrl}
+              body={body}
+              machineName={machineName}
+              title="Ram Used"
+              subheader="(+43%) than last year"
+            />}
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={6}>
+            {machineName && <TimeSeriesGraph
+              url={CpuUserProcessesUrl}
+              body={body}
+              machineName={machineName}
+              title="CPU user"
+              subheader="(+43%) than last year"
+            />}
+          </Grid>
+
           
+          <Grid item xs={12} md={6} lg={6}>
+            {machineName && <TimeSeriesGraph
+              url={CpuSystemProcessesUrl}
+              body={body}
+              machineName={machineName}
+              title="CPU system"
+              subheader="(+43%) than last year"
+            />}
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={6}>
+            {machineName && <TimeSeriesGraph
+              url={ReadBytesProcessesUrl}
+              body={body}
+              machineName={machineName}
+              title="read bytes"
+              subheader="(+43%) than last year"
+            />}
+          </Grid>
+
           <Grid item xs={12} md={6} lg={4}>
             <AppCurrentVisits
               title="RAM Usage"
