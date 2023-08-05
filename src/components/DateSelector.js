@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { Button } from '@mui/material';
 import dayjs from 'dayjs';
 import { useTimeFrame } from '../TimeFrameContext';
@@ -157,9 +157,9 @@ function DateSelector() {
         >
           Last 3 Months
         </Button>
-            <DatePicker label="Starting Date" value={selectedTimeStartingFrame} onChange={handleStartingDateChange} />
+            <DateTimePicker label="Starting Date" value={selectedTimeStartingFrame} onChange={handleStartingDateChange} />
           
-            <DatePicker label="Ending Date" value={selectedTimeEndingFrame} style={{marginRight:'6px'}} onChange={handleEndingDateChange} />
+            <DateTimePicker label="Ending Date" value={selectedTimeEndingFrame} style={{marginRight:'6px'}} onChange={handleEndingDateChange} />
           
             <Button variant="contained" onClick={onApply()}  style={{ marginTop: '1px',marginLeft:'6px', fontSize: '1.3rem' }}>
               APPLY
