@@ -5,10 +5,10 @@ import MachineLayout from './layouts/dashboard/MachineLayout';
 import SimpleLayout from './layouts/simple';
 //
 import BlogPage from './pages/BlogPage';
-import UserPage from './pages/UserPage';
+import UserPage from './pages/MachinesPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import ProductsPage from './pages/ProductsPage';
+import ForecastsPage from './pages/ForecastsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 
 // ----------------------------------------------------------------------
@@ -21,7 +21,7 @@ export default function Router() {
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
-        { path: 'products', element: <ProductsPage /> },
+        { path: 'forecasts', element: <ForecastsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },

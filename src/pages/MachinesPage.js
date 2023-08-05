@@ -2,6 +2,9 @@ import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
 // @mui
 import {
   Box,
@@ -27,7 +30,17 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
+
+// constants
+
+import { addVirtualMachineEndpoint, baseUrl } from '../utils/constant';
+
+// HTTP functions
+
+import { fetchPostRequest } from '../utils/postRequest';
+
 // components
+
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
@@ -41,15 +54,13 @@ import USERLIST from '../_mock/user';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
+  { id: 'dns', label: 'DNS', alignRight: false },
+  { id: 'provider', label: 'Provider', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
 
 // ---------------------------------------------------------------------- popover code
-
 
 const Providers = [
   {
@@ -62,11 +73,14 @@ const Providers = [
     label: 'AWS',
     icon: '/assets/icons/ic_aws.svg',
   },
-  
 ];
 
+const azureTableIcon = "/assets/icons/ic_azure_table.svg";
+const awsTableIcon = '/assets/icons/ic_aws.svg';
 
 // ----------------------------------------------------------------------
+
+const username = "USERNAME";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -116,7 +130,19 @@ export default function UserPage() {
   const [errorText, setErrorText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState(Providers[0]);
+  const [selectedRow, setSelectedRow] = useState(null);
 
+  const navigate = useNavigate();
+
+  const handleRowClick = (row) => {
+    if(row !== selectedRow){
+      setSelectedRow(row === selectedRow ? null : row);
+    }else{
+      navigate('/dashboard/app');
+      setSelectedRow(row === selectedRow ? null : row);
+    }
+  };
+ 
   const handleOpenProviders = (event) => {
     setOpenProviders(event.currentTarget);
   };
@@ -147,7 +173,7 @@ export default function UserPage() {
   const isValidMachineName = () => { 
     //  TODO
     let valid = true;
-    if (machineDNS === 'kaka') {
+    if (machineName === 'kaka') {
       valid = false;
     }
     return valid;
@@ -160,8 +186,10 @@ export default function UserPage() {
     return valid;
   };
 
-  const handleSubmit = (event) => {
+  const  handleSubmit = async (event) => {
+
     setIsSubmitting(true);
+
     if (!machineDNS || !machineName || !selectedProvider) {
       setErrorOpen(true);
       setErrorText('Please fill in all the fields.');
@@ -175,11 +203,18 @@ export default function UserPage() {
       setErrorOpen(true);
       setErrorText('Invalid Provider.');
     } else {
-      setErrorOpen(false); // Clear the error state
-      setSuccessMessage('Machine added successfully!');
-      setSuccessOpen(true);
-      setErrorText('');
-      handleClosePopup();
+      
+      try{
+        const {data, isPending, error} = await fetchPostRequest(`${baseUrl}${addVirtualMachineEndpoint}`, {Name:machineName,DNS:machineDNS,Provider:selectedProvider.value});
+        setErrorOpen(false); 
+        setSuccessMessage('Machine added successfully!');
+        setSuccessOpen(true);
+        setErrorText('');
+        handleClosePopup();
+      }catch(e){
+        setErrorOpen(true);
+        setErrorText(e.message);
+      }
     }
     setTimeout(() => {
       setErrorOpen(false);
@@ -200,7 +235,6 @@ export default function UserPage() {
     setDNS(event.target.value);
     console.log("Value changed:", event.target.value);
   };
-  
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -284,15 +318,20 @@ export default function UserPage() {
       </Helmet>
 
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            Virtual Machine
+      
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
+        <Typography variant="h3" gutterBottom>
+          Welcome back {username}!
+        </Typography>
+        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleNewVirtualMachineButtonClick}>
+          New Virtual Machine
+        </Button>
+      </Stack>
+      
+          <Typography variant="h4" component="span" style={{ display: 'block' }}>
+            Virtual Machines Registered:
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleNewVirtualMachineButtonClick}>
-            New Virtual Machine
-          </Button>
-        </Stack>
-
+        
         {openForm && (
           <Popover
             id="mainPop"
@@ -371,9 +410,9 @@ export default function UserPage() {
             </Box>
             <Snackbar
               open={errorOpen}
-              autoHideDuration={2400}
+              autoHideDuration={3000}
               onClose={handleCloseError}
-              anchorOrigin={{ vertical: 'center', horizontal: 'center' }}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
               <SnackbarContent
                 style={{
@@ -412,87 +451,91 @@ export default function UserPage() {
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+          <TableContainer sx={{ minWidth: 800 }}>
+  <Table>
+    <UserListHead
+      order={order}
+      orderBy={orderBy}
+      headLabel={TABLE_HEAD}
+      rowCount={USERLIST.length}
+      numSelected={selected.length}
+      onRequestSort={handleRequestSort}
+      onSelectAllClick={handleSelectAllClick}
+    />
+    <TableBody>
+      {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+        const { name, role, status, company, avatarUrl } = row;
 
-                    return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
-                        </TableCell>
+        return (
+          <TableRow
+            onDoubleClick={() => navigate('/dashboard/app')}
+            style={{
+              backgroundColor: selectedRow === row ? 'lightblue' : 'transparent',
+            }}
+            onClick={() => handleRowClick(row)}
+          >
+            <TableCell component="th" scope="row" padding="none">
+              <Stack direction="row" alignItems="center" spacing={1} margin={1}>
+                <Avatar alt={name} src={avatarUrl} />
+                <Typography variant="subtitle2" noWrap>
+                  {name}
+                </Typography>
+              </Stack>
+            </TableCell>
 
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
+            <TableCell align="left">{company}</TableCell>
 
-                        <TableCell align="left">{company}</TableCell>
+            <TableCell align="left">
+              {role === 'Azure' && <img src={azureTableIcon} alt="Azure" height={22} />}
+              {role === 'AWS' && <img src={awsTableIcon} alt="AWS" height={30} />}
+            </TableCell>
 
-                        <TableCell align="left">{role}</TableCell>
+            <TableCell align="left">
+              <Label color={((status === 'closed' || status === 'not connected') && 'error') || 'success'}>
+                {sentenceCase(status)}
+              </Label>
+            </TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+            <TableCell align="right">
+              <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                <Iconify icon={'eva:more-vertical-fill'} />
+              </IconButton>
+            </TableCell>
+          </TableRow>
+        );
+      })}
+      {emptyRows > 0 && (
+        <TableRow style={{ height: 53 * emptyRows }}>
+          <TableCell colSpan={6} />
+        </TableRow>
+      )}
+    </TableBody>
 
-                        <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
+    {isNotFound && (
+      <TableBody>
+        <TableRow>
+          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+            <Paper
+              sx={{
+                textAlign: 'center',
+              }}
+            >
+              <Typography variant="h6" paragraph>
+                Not found
+              </Typography>
 
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
-
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
+              <Typography variant="body2">
+                No results found for&nbsp;
+                <strong>&quot;{filterName}&quot;</strong>.
+                <br /> Try checking for typos or using complete words.
+              </Typography>
+            </Paper>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    )}
+  </Table>
+</TableContainer>
           </Scrollbar>
 
           <TablePagination
@@ -525,14 +568,9 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
         <MenuItem sx={{ color: 'error.main' }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
+          Remove
         </MenuItem>
       </Popover>
     </>

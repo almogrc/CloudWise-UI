@@ -1,10 +1,17 @@
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
+import { useState, useEffect } from 'react';
+
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 // components
+import BarChart from '../Charts/BarChart';
+import LineChart from '../Charts/LineChart';
+import { useTimeFrame } from '../TimeFrameContext';
 import Iconify from '../components/iconify';
+
+
 // sections
 import {
   AppTasks,
@@ -17,12 +24,67 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
+  import './design.css';
+
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
-  const theme = useTheme();
 
+  const { setTimeFrame } = useTimeFrame(); 
+
+
+  const handleTimeFrameChange = (newTimeFrame) => {
+    setTimeFrame(newTimeFrame);
+  };
+
+
+  const theme = useTheme();
+  const machineName = "BLA-BLA" // TODO
+  const dataPages = [
+    { name: 'Page A', uv: 400, pv: 2400, amt: 2400 },
+    { name: 'Page B', uv: 200, pv: 2300, amt: 2100 },
+    { name: 'Page C', uv: 340, pv: 2550, amt: 2500 },
+    { name: 'Page D', uv: 892, pv: 2014, amt: 2300 },
+    { name: 'Page E', uv: 111, pv: 2000, amt: 2450 },
+  ];
+  const initialData = [
+    { name: 1, cost: 4.11, impression: 100 },
+    { name: 2, cost: 2.39, impression: 120 },
+    { name: 3, cost: 1.37, impression: 150 },
+    { name: 4, cost: 1.16, impression: 180 },
+    { name: 5, cost: 2.29, impression: 200 },
+    { name: 6, cost: 3, impression: 499 },
+    { name: 7, cost: 0.53, impression: 50 },
+    { name: 8, cost: 2.52, impression: 100 },
+    { name: 9, cost: 1.79, impression: 200 },
+    { name: 10, cost: 2.94, impression: 222 },
+    { name: 11, cost: 4.3, impression: 210 },
+    { name: 12, cost: 4.41, impression: 300 },
+    { name: 13, cost: 2.1, impression: 50 },
+    { name: 14, cost: 8, impression: 190 },
+    { name: 15, cost: 0, impression: 300 },
+    { name: 16, cost: 9, impression: 400 },
+    { name: 17, cost: 3, impression: 200 },
+    { name: 18, cost: 2, impression: 50 },
+    { name: 19, cost: 3, impression: 100 },
+    { name: 20, cost: 7, impression: 100 },
+  ];
+ 
+  const initialState = {
+    data: initialData,
+    left: 'dataMin',
+    right: 'dataMax',
+    refAreaLeft: '',
+    refAreaRight: '',
+    top: 'dataMax+1',
+    bottom: 'dataMin-1',
+    top2: 'dataMax+20',
+    bottom2: 'dataMin-20',
+    animation: true,
+  };
+
+  
   return (
     <>
       <Helmet>
@@ -31,16 +93,16 @@ export default function DashboardAppPage() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back
+          Machine Name: {machineName}
         </Typography>
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Weekly Sales" total={714000} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Ram Capasity" total={714000} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="Memory Capasity" total={1352831} color="info" icon={'ant-design:apple-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
@@ -50,6 +112,10 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
           </Grid>
+
+
+          <LineChart />
+
 
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
@@ -70,32 +136,38 @@ export default function DashboardAppPage() {
               ]}
               chartData={[
                 {
-                  name: 'Team A',
-                  type: 'column',
+                  name: 'CPU 1',
+                  type: 'line',
                   fill: 'solid',
                   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
                 },
                 {
-                  name: 'Team B',
-                  type: 'area',
-                  fill: 'gradient',
+                  name: 'CPU 2',
+                  type: 'line',
+                  fill: 'solid',
                   data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
                 },
                 {
-                  name: 'Team C',
+                  name: 'CPU 3',
                   type: 'line',
                   fill: 'solid',
                   data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
                 },
+                {
+                  name: 'CPU 4',
+                  type: 'line',
+                  fill: 'solid',
+                  data: [14, 13, 25,64, 52, 20, 11, 9, 63,14, 11],
+                },
               ]}
             />
           </Grid>
-
+          
           <Grid item xs={12} md={6} lg={4}>
             <AppCurrentVisits
-              title="Current Visits"
+              title="RAM Usage"
               chartData={[
-                { label: 'America', value: 4344 },
+                { label: 'America', value: 9000 },
                 { label: 'Asia', value: 5435 },
                 { label: 'Europe', value: 1443 },
                 { label: 'Africa', value: 4443 },
