@@ -8,6 +8,7 @@ import { useChart } from '../../../components/chart';
 // ----------------------------------------------------------------------
 // requests 
 import {fetchPostRequest} from '../../../utils/postRequest';
+import { useTimeFrame } from '../../../TimeFrameContext';
 
 TimeSeriesGraph.propTypes = {
   url: PropTypes.string,
@@ -21,9 +22,14 @@ export default function TimeSeriesGraph({url, body, machineName, title, subheade
   const [chartData, setChartData] = useState([]);
   const [chartLabels, setChartLabel] = useState([]);
   const [type, setType] = useState(null);
+  const {
+    refreshCounter,
+    setRefreshCounter,
+  } = useTimeFrame();
 
   const fetchChartDataList = async () => {
     const headers = {"Accept": "application/json","Content-Type": "application/json", 'machineId' : machineName};
+    console.log(body);
     const {data, isPending, error} = await fetchPostRequest(url, body, headers);
     // prepareDataToChart
     const chartDataTmp = [];
@@ -35,7 +41,7 @@ export default function TimeSeriesGraph({url, body, machineName, title, subheade
       setType(data[0]?.type);
       chartLabel = data[0]?.dataPoints?.map(x => x.date);
       for (let i = 0; i < data.length; i+=1) {
-        chartDataTmp.push({name:data[i]?.dataType, type: 'line', fill: 'solid', data: data[i]?.dataPoints?.map(x => x.value)});
+        chartDataTmp.push({name:data[i]?.name, type: 'line', fill: 'solid', data: data[i]?.dataPoints?.map(x => x.value)});
       }
     }
     else{
@@ -69,7 +75,7 @@ export default function TimeSeriesGraph({url, body, machineName, title, subheade
 
   useEffect(() => {
     fetchChartDataList();   
-  },[]);
+  },[refreshCounter]);
 
   return (
     <Card >

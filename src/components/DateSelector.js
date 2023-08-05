@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { Button } from '@mui/material';
 import dayjs from 'dayjs';
 import { useTimeFrame } from '../TimeFrameContext';
@@ -8,6 +8,8 @@ import { useTimeFrame } from '../TimeFrameContext';
 function DateSelector() {
     const {
         selectedTimeStartingFrame,
+        refreshCounter,
+        setRefreshCounter,
         setSelectedStartingTimeFrame,
         selectedTimeEndingFrame,
         setSelectedEndingTimeFrame,
@@ -23,14 +25,16 @@ function DateSelector() {
       
       
     const onApply = ()=>{
-        // setSelectedStartingTimeFrame(dayjs('2022-09-01'));
+      console.log(refreshCounter);
+      setRefreshCounter(refreshCounter => refreshCounter + 1);
+      console.log(refreshCounter);
     }
 
       const toggleToday = () => {
         setLastWeekActive(false);
         setLast3MonthsActive(false);
         setTodayActive(!todayActive);
-        setSelectedStartingTimeFrame(dayjs());
+        setSelectedStartingTimeFrame(dayjs().startOf('day'));
         setSelectedEndingTimeFrame(dayjs());
       };
     
@@ -38,7 +42,7 @@ function DateSelector() {
         setTodayActive(false);
         setLast3MonthsActive(false);
         setLastWeekActive(!lastWeekActive);
-        setSelectedStartingTimeFrame(dayjs().subtract(1, 'week'));
+        setSelectedStartingTimeFrame(dayjs().subtract(1, 'week').startOf('day'));
         setSelectedEndingTimeFrame(dayjs());
       };
     
@@ -46,7 +50,7 @@ function DateSelector() {
         setTodayActive(false);
         setLastWeekActive(false);
         setLast3MonthsActive(!last3MonthsActive);
-        setSelectedStartingTimeFrame(dayjs().subtract(3, 'months'));
+        setSelectedStartingTimeFrame(dayjs().subtract(3, 'months').startOf('day'));
         setSelectedEndingTimeFrame(dayjs());
       };
     
@@ -157,11 +161,11 @@ function DateSelector() {
         >
           Last 3 Months
         </Button>
-            <DatePicker label="Starting Date" value={selectedTimeStartingFrame} onChange={handleStartingDateChange} />
+            <DateTimePicker label="Starting Date" value={selectedTimeStartingFrame} onChange={handleStartingDateChange} />
           
-            <DatePicker label="Ending Date" value={selectedTimeEndingFrame} style={{marginRight:'6px'}} onChange={handleEndingDateChange} />
+            <DateTimePicker label="Ending Date" value={selectedTimeEndingFrame} style={{marginRight:'6px'}} onChange={handleEndingDateChange} />
           
-            <Button variant="contained" onClick={onApply()}  style={{ marginTop: '1px',marginLeft:'6px', fontSize: '1.3rem' }}>
+            <Button variant="contained" onClick={onApply}  style={{ marginTop: '1px',marginLeft:'6px', fontSize: '1.3rem' }}>
               APPLY
         </Button>
         </div>

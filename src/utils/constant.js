@@ -14,13 +14,26 @@ export const removeVirtualMachineEndpoint =  `/VirtualMachine/removeVM`;
 
 export const getAllVMs = '/VirtualMachine/GetAllVMs';
 
+// node exporter
+
 export const machineBase = '/machine/NodeExporter'
 
-// node exporter
 export const RamUsageUrl = `${baseUrl}${machineBase}/RamUsage`;
 
 export const CPUUsageUrl = `${baseUrl}${machineBase}/CPUUsage`;
 
 export const NetworkUrl = `${baseUrl}${machineBase}/Network`;
+
+// process exporter
+
+export const ProcessExporterBase = '/machine/ProcessExporter'
+
+export const RamUsageProcessesUrl = `${baseUrl}${ProcessExporterBase}/ResidentMemory`;
+
+export const CpuUserProcessesUrl = `${baseUrl}${ProcessExporterBase}/CPUUser`;
+
+export const CpuSystemProcessesUrl = `${baseUrl}${ProcessExporterBase}/CPUSystem`;
+
+export const ReadBytesProcessesUrl = `${baseUrl}${ProcessExporterBase}/ReadBytes`;
 
 export const machineIdHeader = 'machineId';
