@@ -17,7 +17,6 @@ import { useTimeFrame } from '../TimeFrameContext';
 import Iconify from '../components/iconify';
 import DateSelector from '../components/DateSelector';
 import CPUGauge from '../Charts/GaugeChart';
-
 // sections
 import {
   AppTasks,
@@ -36,14 +35,18 @@ import {
 
 export default function DashboardAppPage() {
 
-  const { setTimeFrame } = useTimeFrame(); 
   const [machineName, setMachineName] = useState(null);
   const location = useLocation();
 
+  const {
+    selectedTimeStartingFrame,
+    selectedTimeEndingFrame,
+  } = useTimeFrame();
+
   // body
   const body = {
-    from : '2023-07-24T14:00:56Z',
-    to: '2023-07-24T19:30:45Z'
+    from : selectedTimeStartingFrame.format('YYYY-MM-DDTHH:mm:ss[Z]'),
+    to: selectedTimeEndingFrame.format('YYYY-MM-DDTHH:mm:ss[Z]')
   }
   const getMachineNameFromUrl = () => {
       // Access the pathname from the location object
@@ -53,10 +56,6 @@ export default function DashboardAppPage() {
     // need to check vm list of the client 
     setMachineName(lastSegment);
   }
-
-  const handleTimeFrameChange = (newTimeFrame) => {
-    setTimeFrame(newTimeFrame);
-  };
 
 
   const theme = useTheme();
