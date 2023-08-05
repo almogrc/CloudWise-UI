@@ -26,6 +26,9 @@
 
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { TimeFrameProvider } from './TimeFrameContext'; 
 // routes
 import Router from './routes';
@@ -42,11 +45,13 @@ export default function App() {
     <HelmetProvider>
       <BrowserRouter>
         <ThemeProvider>
-          <TimeFrameProvider>
-            <ScrollToTop />
-            <StyledChart />
-            <Router />
-          </TimeFrameProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <TimeFrameProvider>
+              <ScrollToTop />
+              <StyledChart />
+              <Router />
+            </TimeFrameProvider>
+          </LocalizationProvider>
         </ThemeProvider>
       </BrowserRouter>
     </HelmetProvider>
