@@ -57,6 +57,9 @@ export default function DashboardAppPage() {
     setMachineName(lastSegment);
   }
 
+  const checkMachineNameExist = () => {
+
+   }
 
   const theme = useTheme();
   const dataPages = [
@@ -104,6 +107,7 @@ export default function DashboardAppPage() {
 
   useEffect(() => {
     getMachineNameFromUrl();
+    checkMachineNameExist();
   },[]);
 
   return (
