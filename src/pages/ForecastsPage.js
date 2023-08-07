@@ -7,7 +7,7 @@ import { Container, Stack, Typography ,Grid } from '@mui/material';
 import DateSelector from '../components/DateSelector';
 import { TimeSeriesGraph } from '../sections/@dashboard/app';
 import { useTimeFrame } from '../TimeFrameContext';
-import { CPUForcastURL, RAMForcastURL } from '../utils/constant';
+import { RamUsagePredictUrl, CPUUsagePredictUrl, NetworkPredictUrl, RamUsageProcessesPredictUrl, CpuUserProcessesPredictUrl, CpuSystemProcessesPredictUrl, ReadBytesProcessesPredictUrl } from '../utils/constant';
 
 // ----------------------------------------------------------------------
 
@@ -38,8 +38,7 @@ export default function ProductsPage() {
 
   // body
   const body = {
-    from : selectedTimeStartingFrame.format('YYYY-MM-DDTHH:mm:ss[Z]'),
-    to: selectedTimeEndingFrame.format('YYYY-MM-DDTHH:mm:ss[Z]')
+    
   }
 
 
@@ -63,19 +62,46 @@ export default function ProductsPage() {
 
       <Grid item xs={12} md={6} lg={6}>
             {machineName && <TimeSeriesGraph
-              url={CPUForcastURL}
+              url={RamUsagePredictUrl}
               body={body}
               machineName={machineName}
-              title="Ram Usage"
+              title="Ram Usage Predict"
               subheader="(+43%) than last year"
             />}
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           {machineName && <TimeSeriesGraph
-            url={RAMForcastURL}
+            url={CPUUsagePredictUrl}
             body={body}
             machineName={machineName}
-            title="Ram Usage"
+            title="CPU Usage predict"
+            subheader="(+43%) than last year"
+          />}
+        </Grid>
+        <Grid item xs={12} md={6} lg={6}>
+          {machineName && <TimeSeriesGraph
+            url={NetworkPredictUrl}
+            body={body}
+            machineName={machineName}
+            title="Network predict"
+            subheader="(+43%) than last year"
+          />}
+        </Grid>
+        <Grid item xs={12} md={6} lg={6}>
+          {machineName && <TimeSeriesGraph
+            url={RamUsageProcessesPredictUrl}
+            body={body}
+            machineName={machineName}
+            title="Ram Usage process predict"
+            subheader="(+43%) than last year"
+          />}
+        </Grid>
+        <Grid item xs={12} md={6} lg={6}>
+          {machineName && <TimeSeriesGraph
+            url={CpuUserProcessesPredictUrl}
+            body={body}
+            machineName={machineName}
+            title="CPU Usage user process predict"
             subheader="(+43%) than last year"
           />}
         </Grid>

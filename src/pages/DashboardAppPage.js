@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 
 // constants
-import { RamUsageUrl, CPUUsageUrl, NetworkUrl, RamUsageProcessesUrl, CpuUserProcessesUrl, CpuSystemProcessesUrl, ReadBytesProcessesUrl, RamUrl, RamGaugeUrl, CPUGaugeUrl } from '../utils/constant';
+import { RamUsageUrl, CPUUsageUrl, NetworkUrl, RamUsageProcessesUrl, CpuUserProcessesUrl, CpuSystemProcessesUrl, ReadBytesProcessesUrl, RamUrl, RamGaugeUrl, CPUGaugeUrl, CoresUrl } from '../utils/constant';
 
 // components
 import { useTimeFrame } from '../TimeFrameContext';
@@ -135,7 +135,7 @@ export default function DashboardAppPage() {
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            {machineName && <AppWidgetSummary title="Ram Capacity" url={RamUrl} machineName={machineName} icon={'ant-design:android-filled'} />}
+            {machineName && <AppWidgetSummary title="Cores" url={CoresUrl} machineName={machineName} icon={'ant-design:android-filled'} />}
           </Grid>
 
           <Grid item xs={12} md={6} lg={6}>
