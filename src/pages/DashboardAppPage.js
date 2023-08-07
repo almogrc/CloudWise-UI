@@ -11,8 +11,6 @@ import { Grid, Container, Typography } from '@mui/material';
 import { RamUsageUrl, CPUUsageUrl, NetworkUrl, RamUsageProcessesUrl, CpuUserProcessesUrl, CpuSystemProcessesUrl, ReadBytesProcessesUrl } from '../utils/constant';
 
 // components
-import BarChart from '../Charts/BarChart';
-import LineChart from '../Charts/LineChart';
 import { useTimeFrame } from '../TimeFrameContext';
 import Iconify from '../components/iconify';
 import DateSelector from '../components/DateSelector';
