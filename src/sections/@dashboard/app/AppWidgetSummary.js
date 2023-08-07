@@ -2,8 +2,10 @@
 import PropTypes from 'prop-types';
 import { alpha, styled } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
+import { useState, useEffect} from 'react';
 // utils
 import { fShortenNumber } from '../../../utils/formatNumber';
+import {fetchGetRequest} from '../../../utils/getRequest';
 // components
 import Iconify from '../../../components/iconify';
 
@@ -26,11 +28,22 @@ AppWidgetSummary.propTypes = {
   color: PropTypes.string,
   icon: PropTypes.string,
   title: PropTypes.string.isRequired,
-  total: PropTypes.number.isRequired,
+  url: PropTypes.string.isRequired,
+  machineName: PropTypes.string.isRequired,
   sx: PropTypes.object,
 };
 
-export default function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other }) {
+export default function AppWidgetSummary({ title, url, machineName, icon, color = 'primary', sx, ...other }) {
+  const [value, setValue] = useState('');
+  const fetchValue = async () => {
+    const headers = {"Accept": "application/json","Content-Type": "application/json", 'machineId' : machineName};
+    const {data, isPending, error} = await fetchGetRequest(url, headers);
+    const num = fShortenNumber(data.result);
+    setValue(`${num}${data.type}`);
+  }
+  useEffect(() => {
+    fetchValue();   
+  },[]);
   return (
     <Card
       sx={{
@@ -56,7 +69,7 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
         <Iconify icon={icon} width={24} height={24} />
       </StyledIcon>
 
-      <Typography variant="h3">{fShortenNumber(total)}</Typography>
+      <Typography variant="h3">{value}</Typography>
 
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         {title}
