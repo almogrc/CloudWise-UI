@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 
 // constants
-import { RamUsageUrl, CPUUsageUrl, NetworkUrl, RamUsageProcessesUrl, CpuUserProcessesUrl, CpuSystemProcessesUrl, ReadBytesProcessesUrl } from '../utils/constant';
+import { RamUsageUrl, CPUUsageUrl, NetworkUrl, RamUsageProcessesUrl, CpuUserProcessesUrl, CpuSystemProcessesUrl, ReadBytesProcessesUrl, RamUrl, RamGaugeUrl, CPUGaugeUrl } from '../utils/constant';
 
 // components
 import BarChart from '../Charts/BarChart';
@@ -57,6 +57,9 @@ export default function DashboardAppPage() {
     setMachineName(lastSegment);
   }
 
+  const checkMachineNameExist = () => {
+
+   }
 
   const theme = useTheme();
   const dataPages = [
@@ -104,6 +107,7 @@ export default function DashboardAppPage() {
 
   useEffect(() => {
     getMachineNameFromUrl();
+    checkMachineNameExist();
   },[]);
 
   return (
@@ -121,19 +125,19 @@ export default function DashboardAppPage() {
         
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Ram Capacity" total={714000} icon={'ant-design:android-filled'} />
+           {machineName &&<AppWidgetSummary title="Ram Capacity" url={RamUrl} machineName={machineName} icon={'ant-design:android-filled'} />}
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <CPUGauge cpuUsage={0.7} customSegmentStops={[0, 0.3, 0.8, 1]}/>
+            {machineName &&<CPUGauge title="Ram Used" url={RamGaugeUrl} machineName={machineName} customSegmentStops={[0, 0.2, 0.5, 1]}/>}
           </Grid>
           
           <Grid item xs={12} sm={6} md={3}>
-            <CPUGauge cpuUsage={0.7} customSegmentStops={[0, 0.2, 0.5, 1]}/>
+          {machineName &&<CPUGauge title="CPU Busy" url={CPUGaugeUrl} machineName={machineName} customSegmentStops={[0, 0.2, 0.5, 1]}/>}
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Ram Capacity" total={714000} icon={'ant-design:android-filled'} />
+            {machineName && <AppWidgetSummary title="Ram Capacity" url={RamUrl} machineName={machineName} icon={'ant-design:android-filled'} />}
           </Grid>
 
           <Grid item xs={12} md={6} lg={6}>
