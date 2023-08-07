@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 
 // constants
-import { RamUsageUrl, CPUUsageUrl, NetworkUrl, RamUsageProcessesUrl, CpuUserProcessesUrl, CpuSystemProcessesUrl, ReadBytesProcessesUrl, RamUrl, RamGaugeUrl, CPUGaugeUrl } from '../utils/constant';
+import { RamUsageUrl, CPUUsageUrl, NetworkUrl, RamUsageProcessesUrl, CpuUserProcessesUrl, CpuSystemProcessesUrl, ReadBytesProcessesUrl, RamUrl, RamGaugeUrl, CPUGaugeUrl, CoresUrl } from '../utils/constant';
 
 // components
 import { useTimeFrame } from '../TimeFrameContext';
@@ -135,7 +135,7 @@ export default function DashboardAppPage() {
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            {machineName && <AppWidgetSummary title="Ram Capacity" url={RamUrl} machineName={machineName} icon={'ant-design:android-filled'} />}
+            {machineName && <AppWidgetSummary title="Cores" url={CoresUrl} machineName={machineName} icon={'ant-design:android-filled'} />}
           </Grid>
 
           <Grid item xs={12} md={6} lg={6}>
@@ -209,7 +209,7 @@ export default function DashboardAppPage() {
             />}
           </Grid>
 
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <AppCurrentVisits
               title="RAM Usage"
               chartData={[
@@ -225,9 +225,9 @@ export default function DashboardAppPage() {
                 theme.palette.error.main,
               ]}
             />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
               title="Conversion Rates"
               subheader="(+43%) than last year"
@@ -329,8 +329,8 @@ export default function DashboardAppPage() {
                 { id: '5', label: 'Sprint Showcase' },
               ]}
             />
-          </Grid>
-        </Grid>
+          </Grid> */}
+        </Grid> 
       </Container>
     </>
   );

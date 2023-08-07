@@ -26,6 +26,8 @@ export const NetworkUrl = `${baseUrl}${machineBase}/Network`;
 
 export const RamUrl = `${baseUrl}${machineBase}/Ram`;
 
+export const CoresUrl = `${baseUrl}${machineBase}/Cores`;
+
 export const RamGaugeUrl = `${baseUrl}${machineBase}/RamGauge`;
 
 export const CPUGaugeUrl = `${baseUrl}${machineBase}/CPUGauge`;
@@ -44,8 +46,24 @@ export const ReadBytesProcessesUrl = `${baseUrl}${ProcessExporterBase}/ReadBytes
 
 export const machineIdHeader = 'machineId';
 
-// forcasts
+// forcasts node exporter
 
-export const CPUForcastURL = 'GuyIsHomo';
+export const machinePredictBase = '/machine/NodePredict'
 
-export const RAMForcastURL = 'GuyIsMozez';
+export const RamUsagePredictUrl = `${baseUrl}${machinePredictBase}/RamUsage`;
+
+export const CPUUsagePredictUrl = `${baseUrl}${machinePredictBase}/CPUUsage`;
+
+export const NetworkPredictUrl = `${baseUrl}${machinePredictBase}/Network`;
+
+// forcasts process exporter
+
+export const ProcessExporterPredictBase = '/machine/ProcessPredict'
+
+export const RamUsageProcessesPredictUrl = `${baseUrl}${ProcessExporterPredictBase}/ResidentMemory`;
+
+export const CpuUserProcessesPredictUrl = `${baseUrl}${ProcessExporterPredictBase}/CPUUser`;
+
+export const CpuSystemProcessesPredictUrl = `${baseUrl}${ProcessExporterPredictBase}/CPUSystem`;
+
+export const ReadBytesProcessesPredictUrl = `${baseUrl}${ProcessExporterPredictBase}/ReadBytes`;
