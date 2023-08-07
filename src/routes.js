@@ -21,8 +21,7 @@ export default function Router() {
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: ':machineId', element: <DashboardAppPage /> },
-        { path: 'forecasts', element: <ForecastsPage /> },
-        { path: 'blog', element: <BlogPage /> },
+        { path: 'forecasts/:machineId', element: <ForecastsPage /> },
       ],
     },
     {

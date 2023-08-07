@@ -24,6 +24,12 @@ export const CPUUsageUrl = `${baseUrl}${machineBase}/CPUUsage`;
 
 export const NetworkUrl = `${baseUrl}${machineBase}/Network`;
 
+export const RamUrl = `${baseUrl}${machineBase}/Ram`;
+
+export const RamGaugeUrl = `${baseUrl}${machineBase}/RamGauge`;
+
+export const CPUGaugeUrl = `${baseUrl}${machineBase}/CPUGauge`;
+
 // process exporter
 
 export const ProcessExporterBase = '/machine/ProcessExporter'

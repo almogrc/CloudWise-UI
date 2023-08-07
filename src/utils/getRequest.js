@@ -1,14 +1,14 @@
-export async function fetchGetRequest(url){
+export async function fetchGetRequest(url, header =  {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+  }){
     let data;
     let isPending;    
     let errorMsg = null;
     try{
      await fetch(url, {
         credentials: 'include',
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-        }
+        headers: header
       })
         .then(response => {
             if(!response.ok){
