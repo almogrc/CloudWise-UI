@@ -16,17 +16,22 @@ import DashboardAppPage from './pages/DashboardAppPage';
 export default function Router() {
   const routes = useRoutes([
     {
+      path: 'login',
+      element: <LoginPage />,
+    },
+    {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: ':machineId', element: <DashboardAppPage /> },
-        { path: 'forecasts/:machineId', element: <ForecastsPage /> },
+        { path: 'forecasts', 
+          children: [
+          { path: ':machineId',
+          element:<ForecastsPage/>}
+          ]
+        },
       ],
-    },
-    {
-      path: 'login',
-      element: <LoginPage />,
     },
     {
       element: <MachineLayout />,

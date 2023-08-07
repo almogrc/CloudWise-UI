@@ -52,7 +52,7 @@ function NavItem({ item }) {
         setDynamicRoute((prev) =>`/dashboard/${machineName}`);
       }
       else{
-        setDynamicRoute((prev) =>`/dashboard/forcasts/${machineName}`);
+        setDynamicRoute((prev) =>`/dashboard/forecasts/${machineName}`);
       }
     }
   };
