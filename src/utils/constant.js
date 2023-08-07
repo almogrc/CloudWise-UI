@@ -43,3 +43,9 @@ export const CpuSystemProcessesUrl = `${baseUrl}${ProcessExporterBase}/CPUSystem
 export const ReadBytesProcessesUrl = `${baseUrl}${ProcessExporterBase}/ReadBytes`;
 
 export const machineIdHeader = 'machineId';
+
+// forcasts
+
+export const CPUForcastURL = 'GuyIsHomo';
+
+export const RAMForcastURL = 'GuyIsMozez';

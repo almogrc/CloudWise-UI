@@ -47,7 +47,7 @@ export default function TimeSeriesGraph({url, body, machineName, title, subheade
     else{
       setType(data?.type);
       chartLabel = data?.dataPoints?.map(x => x.date);
-      chartDataTmp.push({name:data?.name, type: 'line', fill: 'solid', data: data?.dataPoints?.map(x => x.value)});
+      chartDataTmp.push({name:data?.name, type: 'line', fill: 'solid', data: data?.dataPoints?.map(x => x.value.toFixed(2))});
     }
     console.log(chartDataTmp);
     setChartData(chartDataTmp); 
@@ -65,7 +65,7 @@ export default function TimeSeriesGraph({url, body, machineName, title, subheade
       y: {
         formatter: (y) => {
           if (typeof y !== 'undefined') {
-            return `${y} ${type}`;
+            return `${y.toFixed(2)} ${type}`;
           }
           return y;
         },

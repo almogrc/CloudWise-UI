@@ -171,12 +171,8 @@ const fetchMachineDataList = async () => {
   };
   
   const isValidDNS = () => {
-    //  TODO
-    let valid = true;
-    if (machineDNS === 'kaka') {
-      valid = false;
-    }
-    return valid;
+    const pattern = /^(?:(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}$/;
+      return pattern.test(machineDNS);
   };
 
   const isValidMachineName = () => { 
