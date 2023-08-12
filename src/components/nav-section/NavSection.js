@@ -13,11 +13,26 @@ NavSection.propTypes = {
 };
 
 export default function NavSection({ data = [], ...other }) {
+  const location = useLocation();
+  const createPath = (title) => {
+    console.log(title);
+    if(title === 'Machines'){
+      return '/managerMachines';
+    }
+    // else
+      const currentPathname = location.pathname;
+      const pathSegments = currentPathname.split('/');
+      const machineName = pathSegments[pathSegments.length - 1];
+      if(title === 'dashboard'){
+        return `/dashboard/${machineName}`;
+      }
+        return `/dashboard/forecasts/${machineName}`;
+  };
   return (
     <Box {...other}>
       <List disablePadding sx={{ p: 1 }}>
         {data.map((item) => (
-          <NavItem key={item.title} item={item}/>
+          <NavItem item={item} path={createPath(item.title)}/>
         ))}
       </List>
     </Box>
@@ -30,38 +45,12 @@ NavItem.propTypes = {
   item: PropTypes.object,
 };
 
-function NavItem({ item }) {
-  const { title, icon, info } = item;
-  const location = useLocation();
-  const [dynamicRoute, setDynamicRoute] = useState(location.pathname);
-  const handleClick = () => {
-    // Perform some actions before navigating
-    console.log(title);
-    if(title === 'Machines'){
-      console.log(title);
-      console.log(dynamicRoute);
-      setDynamicRoute((prev) => '/managerMachines');
-      console.log(dynamicRoute);
-    }
-    else{
-      console.log(dynamicRoute);
-      const currentPathname = location.pathname;
-      const pathSegments = currentPathname.split('/');
-      const machineName = pathSegments[pathSegments.length - 1];
-      if(title === 'dashboard'){
-        setDynamicRoute((prev) =>`/dashboard/${machineName}`);
-      }
-      else{
-        setDynamicRoute((prev) =>`/dashboard/forecasts/${machineName}`);
-      }
-    }
-  };
-
+function NavItem({ item, path }) {
+  const { title, icon } = item;
   return (
       <StyledNavItem
         component={NavLink}
-        to={dynamicRoute}
-        onClick={handleClick}
+        to={path}
         sx={{
           '&.active': {
             color: 'text.primary',
@@ -74,7 +63,6 @@ function NavItem({ item }) {
 
       <ListItemText disableTypography primary={title} />
 
-      {info && info}
     </StyledNavItem>
 
   );

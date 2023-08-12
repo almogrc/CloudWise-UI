@@ -16,14 +16,14 @@ import DashboardAppPage from './pages/DashboardAppPage';
 export default function Router() {
   const routes = useRoutes([
     {
-      path: 'login',
-      element: <LoginPage />,
+      path: '/login',
+      element: <LoginPage />, index: true,
     },
     {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
+        { element: <Navigate to="/dashboard/app" />},
         { path: ':machineId', element: <DashboardAppPage /> },
         { path: 'forecasts', 
           children: [
@@ -43,14 +43,18 @@ export default function Router() {
     {
       element: <SimpleLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
+        { element: <Navigate to="/dashboard/app" />},
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" /> },
       ],
     },
     {
+      path: '',
+       element: <Navigate to="/login" replace />,
+    },
+    {
       path: '*',
-      element: <Navigate to="/404" replace />,
+       element: <Navigate to="/404" replace />,
     },
   ]);
 
