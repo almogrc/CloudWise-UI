@@ -67,3 +67,7 @@ export const CpuUserProcessesPredictUrl = `${baseUrl}${ProcessExporterPredictBas
 export const CpuSystemProcessesPredictUrl = `${baseUrl}${ProcessExporterPredictBase}/CPUSystem`;
 
 export const ReadBytesProcessesPredictUrl = `${baseUrl}${ProcessExporterPredictBase}/ReadBytes`;
+
+export const logout = () => {
+    window.localStorage.removeItem("authToken");
+  };
