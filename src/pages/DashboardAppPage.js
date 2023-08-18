@@ -127,11 +127,11 @@ export default function DashboardAppPage() {
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            {machineName &&<CPUGauge title="Ram Used" url={RamGaugeUrl} machineName={machineName} customSegmentStops={[0, 0.2, 0.5, 1]}/>}
+            {machineName &&<CPUGauge title="Ram Used (%)" url={RamGaugeUrl} machineName={machineName} customSegmentStops={[0,20,50, 100]}/>}
           </Grid>
           
           <Grid item xs={12} sm={6} md={3}>
-          {machineName &&<CPUGauge title="CPU Busy" url={CPUGaugeUrl} machineName={machineName} customSegmentStops={[0, 0.2, 0.5, 1]}/>}
+          {machineName &&<CPUGauge title="CPU Busy (%)" url={CPUGaugeUrl} machineName={machineName} customSegmentStops={[0, 30, 70, 100]}/>}
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>

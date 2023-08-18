@@ -48,7 +48,6 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/user';
 
 
 // ----------------------------------------------------------------------
@@ -134,7 +133,7 @@ export default function UserPage() {
   const [selectedRow, setSelectedRow] = useState(null);
   const [machineDataList, setMachineDataList] = useState([]);
 
-  const navigate = useNavigate();
+const navigate = useNavigate();
 
 const fetchMachineDataList = async () => {
     const {data, isPending, error} = await fetchGetRequest(`${baseUrl}${getAllVMs}`);
@@ -481,7 +480,7 @@ const fetchMachineDataList = async () => {
             }}
             onClick={() => handleRowClick(row)}
           >
-            <TableCell component="th" scope="row" padding="none">
+            <TableCell component="th" scope="row" padding="2">
               <Stack direction="row" alignItems="center" spacing={1} margin={1}>
                 <Typography variant="subtitle2" noWrap>
                   {name}

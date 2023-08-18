@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ForecastsPage from './pages/ForecastsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+import SignupPage from './pages/SignupPage';
 
 // ----------------------------------------------------------------------
 
@@ -18,6 +19,10 @@ export default function Router() {
     {
       path: '/login',
       element: <LoginPage />, index: true,
+    },
+    {
+      path: '/signup',
+      element: <SignupPage />,
     },
     {
       path: '/dashboard',
