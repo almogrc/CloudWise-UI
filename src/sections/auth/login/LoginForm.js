@@ -29,6 +29,7 @@ export default function LoginForm() {
   const handleClick = async () => {
     try{
       const {data, isPending, error} = await fetchPostRequest(`${baseUrl}${loginEndpoint}`, {Email:email,Password:password});
+      window.localStorage.setItem("isLoggedIn", true);
       navigate('/managerMachines');
     }catch(e){
       setErrorMsg(e.message);
@@ -70,3 +71,5 @@ export default function LoginForm() {
     </>
   );
 }
+
+
