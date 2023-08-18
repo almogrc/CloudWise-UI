@@ -4,7 +4,7 @@ import {fetchGetRequest} from '../utils/getRequest';
 
 
 const CPUGauge = ({ title, url, machineName, customSegmentStops}) => {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0.0);
   const fetchValue = async () => {
     const headers = {"Accept": "application/json","Content-Type": "application/json", 'machineId' : machineName};
     const {data, isPending, error} = await fetchGetRequest(url, headers);
@@ -12,9 +12,8 @@ const CPUGauge = ({ title, url, machineName, customSegmentStops}) => {
   }
  
   const textColor = '#AAA';
-  const minValue = 0;
-  const maxValue = 1;
-  // const customSegmentStops = [0, 0.4, 0.7, 1];
+  const minValue = 0.0;
+  const maxValue = 100.0 ;
   const segmentColors = ['#1dcc26', '#e9d62f', '#d12323'];
   const needleColor = 'grey';
   
