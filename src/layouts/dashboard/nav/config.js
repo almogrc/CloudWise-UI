@@ -15,9 +15,14 @@ const navConfig = [
     title: 'dashboard',
     icon: icon('ic_analytics'), 
   },
+  
   { 
     title: 'forecasts',
     icon: icon('ic_crystal_ball'),
+  },
+  {
+    title: 'alerts',
+    icon: icon('ic_bell'),
   },
 ];
 
