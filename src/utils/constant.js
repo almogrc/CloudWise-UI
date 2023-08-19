@@ -2,9 +2,11 @@ export const isDevelopment = true;
 
 export const baseUrl = isDevelopment? "http://localhost:5001/api" : "http://";
 
-export const loginEndpoint = `/Connection/login`;
-
 export const connectionEndpoint =  "/Connection";
+
+export const loginEndpoint = `${connectionEndpoint}/login`;
+
+export const signUpEndpoint = `${connectionEndpoint}/signUp`;
 
 export const virtualMachineEndpoint =  "/VirtualMachine";
 
