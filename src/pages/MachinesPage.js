@@ -55,21 +55,21 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'dns', label: 'DNS', alignRight: false },
-  { id: 'provider', label: 'Provider', alignRight: false },
+  { id: 'Supplier', label: 'Supplier', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
 
 // ---------------------------------------------------------------------- popover code
 
-const Providers = [
+const Suppliers = [
   {
-    value: 'azure',
+    value: 'Azure',
     label: 'Azure',
     icon: '/assets/icons/ic_azure.svg',
   },
   {
-    value: 'aws',
+    value: 'Aws',
     label: 'AWS',
     icon: '/assets/icons/ic_aws.svg',
   },
@@ -115,7 +115,7 @@ export default function UserPage() {
 
   const [machineDNS, setDNS] = useState('');
   const [machineName, setMachineName] = useState('');
-  const [openProviders, setOpenProviders] = useState('');
+  const [openSuppliers, setOpenSuppliers] = useState('');
   const [open, setOpen] = useState(null);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
@@ -129,7 +129,7 @@ export default function UserPage() {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorText, setErrorText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedProvider, setSelectedProvider] = useState(Providers[0]);
+  const [selectedSupplier, setSelectedSupplier] = useState(Suppliers[0]);
   const [selectedRow, setSelectedRow] = useState(null);
   const [machineDataList, setMachineDataList] = useState([]);
 
@@ -151,8 +151,8 @@ const fetchMachineDataList = async () => {
     }
   };
  
-  const handleOpenProviders = (event) => {
-    setOpenProviders(event.currentTarget);
+  const handleOpenSuppliers = (event) => {
+    setOpenSuppliers(event.currentTarget);
   };
 
   const handleCancel = (event) => {
@@ -162,10 +162,10 @@ const fetchMachineDataList = async () => {
   const handleClosePopup = () => {
     setDNS('');
     setMachineName('');
-    setOpenProviders('');
+    setOpenSuppliers('');
     setErrorOpen(false);
     setErrorText('');
-    setSelectedProvider(Providers[0]);
+    setSelectedSupplier(Suppliers[0]);
     setOpenPopup(null);
   };
   
@@ -183,7 +183,7 @@ const fetchMachineDataList = async () => {
     return valid;
   };
 
-  const isValidProvider = () => {
+  const isValidSupplier = () => {
     let valid = true;
     valid = true;
     //  TODO
@@ -194,7 +194,7 @@ const fetchMachineDataList = async () => {
 
     setIsSubmitting(true);
 
-    if (!machineDNS || !machineName || !selectedProvider) {
+    if (!machineDNS || !machineName || !selectedSupplier) {
       setErrorOpen(true);
       setErrorText('Please fill in all the fields.');
     } else if (!isValidDNS()) {
@@ -203,18 +203,19 @@ const fetchMachineDataList = async () => {
     } else if (!isValidMachineName()) {
       setErrorOpen(true);
       setErrorText('Invalid Machine Name.');
-    } else if (!isValidProvider()) {
+    } else if (!isValidSupplier()) {
       setErrorOpen(true);
-      setErrorText('Invalid Provider.');
+      setErrorText('Invalid Supplier.');
     } else {
       
       try{
-        const {data, isPending, error} = await fetchPostRequest(`${baseUrl}${addVirtualMachineEndpoint}`, {Name:machineName,DNS:machineDNS,Provider:selectedProvider.value});
+        const {data, isPending, error} = await fetchPostRequest(`${baseUrl}${addVirtualMachineEndpoint}`, {Name:machineName,DNSAddress:machineDNS,Supplier:selectedSupplier.value});
         setErrorOpen(false); 
-        setSuccessMessage('Machine added successfully!');
+        setSuccessMessage(data.result);
         setSuccessOpen(true);
         setErrorText('');
         handleClosePopup();
+        fetchMachineDataList();
       }catch(e){
         setErrorOpen(true);
         setErrorText(e.message);
@@ -227,8 +228,8 @@ const fetchMachineDataList = async () => {
     }, 2000);
   };
   
-  const handleCloseProviders = () => {
-    setOpenProviders('');
+  const handleCloseSuppliers = () => {
+    setOpenSuppliers('');
   };
   
   const handleChangeMachineNameTextBox = (event) =>  {
@@ -295,9 +296,9 @@ const fetchMachineDataList = async () => {
     setFilterName(event.target.value);
   };
 
-  const handleProviderSelect = (option) => {
-    setSelectedProvider(option);
-    handleCloseProviders();
+  const handleSupplierSelect = (option) => {
+    setSelectedSupplier(option);
+    handleCloseSuppliers();
   };
 
   const handleCloseError = () => {
@@ -327,7 +328,7 @@ const fetchMachineDataList = async () => {
       
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
         <Typography variant="h3" gutterBottom>
-          Welcome back {username}!
+          Welcome back!
         </Typography>
         <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleNewVirtualMachineButtonClick}>
           New Virtual Machine
@@ -364,16 +365,16 @@ const fetchMachineDataList = async () => {
             <Typography sx={{ p: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography variant="subtitle1" sx={{ marginRight: '10px', marginLeft: '20px', flexGrow: 1, textAlign: 'left' }}>
-                  Provider:
+                  Supplier:
                 </Typography>
-                <Button onClick={handleOpenProviders} sx={{ marginRight: '40px', padding: 0, width: 70, height: 50 }}>
-                  <img src={selectedProvider.icon} alt={selectedProvider.label} />
+                <Button onClick={handleOpenSuppliers} sx={{ marginRight: '40px', padding: 0, width: 70, height: 50 }}>
+                  <img src={selectedSupplier.icon} alt={selectedSupplier.label} />
                 </Button>
               </Box>
               <Menu
-                open={Boolean(openProviders)}
-                anchorEl={openProviders}
-                onClose={handleCloseProviders}
+                open={Boolean(openSuppliers)}
+                anchorEl={openSuppliers}
+                onClose={handleCloseSuppliers}
                 anchorOrigin={{
                   vertical: 'top',
                   horizontal: 'right',
@@ -385,11 +386,11 @@ const fetchMachineDataList = async () => {
                 sx={{ marginTop: '8px' }}
               >
                 <Stack sx={{ minWidth: 100 }}>
-                  {Providers.map((option) => (
+                  {Suppliers.map((option) => (
                     <MenuItem
                       key={option.value}
-                      selected={option.value === selectedProvider.value}
-                      onClick={() => handleProviderSelect(option)}
+                      selected={option.value === selectedSupplier.value}
+                      onClick={() => handleSupplierSelect(option)}
                     >
                       <Box component="img" alt={option.label} src={option.icon} sx={{ width: 28, mr: 2 }} />
                       {option.label}
@@ -470,7 +471,7 @@ const fetchMachineDataList = async () => {
     />
     <TableBody>
       {machineDataList.map((row) => {
-        const { name, supplier, address, thresholds, alerts} = row;
+        const { name, supplier, dnsAddress, status}: { name: string, supplier: string, dnsAddress: string, status: string } = row;
 
         return (
           <TableRow
@@ -488,14 +489,16 @@ const fetchMachineDataList = async () => {
               </Stack>
             </TableCell>
 
-            <TableCell align="left">{address}</TableCell>
+            <TableCell align="left">{dnsAddress}</TableCell>
 
             <TableCell align="left">
               {supplier === 'Azure' && <img src={azureTableIcon} alt="Azure" height={22} />}
               {supplier === 'AWS' && <img src={awsTableIcon} alt="AWS" height={30} />}
             </TableCell>
 
-         
+            <TableCell align="left">
+              <Label style={{ color: status === 'UP' ? 'green' : 'red' }}>{status}</Label>
+            </TableCell>
 
             <TableCell align="right">
               <IconButton size="large" color="inherit" onClick={handleOpenMenu}>

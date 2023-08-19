@@ -27,7 +27,7 @@ export default function NavSection({ data = [], ...other }) {
         return `/dashboard/${machineName}`;
       } 
       if(title === 'alerts'){
-        return `/alerts`;
+        return `/dashboard/alerts/${machineName}`;
       }
         return `/dashboard/forecasts/${machineName}`;
   };

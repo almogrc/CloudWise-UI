@@ -38,6 +38,12 @@ export default function Router() {
           element:<ForecastsPage/>}
           ]
         },
+        { path: 'alerts', 
+        children: [
+        { path: ':machineId',
+        element:<AlertsPage/>}
+        ]
+      },
         {
           path: 'alerts',
           element: <AlertsPage />,

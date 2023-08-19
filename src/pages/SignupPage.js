@@ -6,8 +6,8 @@ import { Link as RouterLink  , useNavigate} from 'react-router-dom';
 import useResponsive from '../hooks/useResponsive';
 import Logo from '../components/logo';
 import Iconify from '../components/iconify';
-
-
+import {baseUrl, signUpEndpoint} from '../utils/constant';
+import {fetchPostRequest} from '../utils/postRequest';
 
 const StyledRoot = styled('div')(({ theme }) => ({
     [theme.breakpoints.up('md')]: {
@@ -41,10 +41,17 @@ export default function SignupPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
 
 
-const handleClick = async () => {
-  
+const handleSubmit = async () => {
+  try{
+    const {data, isPending, error} = await fetchPostRequest(`${baseUrl}${signUpEndpoint}`, {Name:name, Email:email,Password:password});
+    navigate('/login');
+  }catch(e){
+    console.log(e.message);
+    setErrorMsg(e.message);
+  }
 };
 
 const [showPassword, setShowPassword] = useState(false);
@@ -114,14 +121,13 @@ const handleChangeName = (event) => {
 
       <Stack sx={{ mb: 3 }}/>
       <Typography variant="body2" sx={{ mb: 2.7 }}>
-              Don’t have an account? {''}
+              Already have an acount? {''}
               <Link component={RouterLink} to="/login" variant="subtitle2" sx={{ mb: 2 }} fontSize={16}>Log in</Link>
         </Typography>
-      
-
+        {errorMsg && <Typography color="red" variant="body2" sx={{ mb: 5 }}>{errorMsg}</Typography>}
       {/* Rest of the content */}
       
-      <Button fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
+      <Button fullWidth size="large" type="submit" variant="contained" onClick={handleSubmit}>
         Sign Up
       </Button>
     

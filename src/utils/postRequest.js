@@ -11,11 +11,14 @@ export async function fetchPostRequest(url, requestBody, header = {"Content-Type
         body: JSON.stringify(requestBody)
       })
         .then(response => {
-            if(!response.ok){
-                throw Error(response.message)
-            }
+            if (!response.ok) {
+                return response.json().then(errorData => {
+                  // Throw an error with the message from the response JSON
+                  console.log("Response:", errorData);
+                  throw new Error(errorData.error);
+                });
+              }
             return response.json();
-
         })
         .then(bodyData => {
             console.log("Response:", data);
@@ -24,7 +27,8 @@ export async function fetchPostRequest(url, requestBody, header = {"Content-Type
             errorMsg = null;
         })
     }catch(e){
-        throw Error(e.message);
+        console.log(e.message);
+        throw e;
     }
     return {data, isPending, errorMsg}
 }
