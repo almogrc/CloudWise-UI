@@ -25,6 +25,9 @@ export default function NavSection({ data = [], ...other }) {
       const machineName = pathSegments[pathSegments.length - 1];
       if(title === 'dashboard'){
         return `/dashboard/${machineName}`;
+      } 
+      if(title === 'alerts'){
+        return `/alerts`;
       }
         return `/dashboard/forecasts/${machineName}`;
   };
