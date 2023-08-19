@@ -25,9 +25,9 @@ function DateSelector() {
       
       
     const onApply = ()=>{
-      console.log(refreshCounter);
+
       setRefreshCounter(refreshCounter => refreshCounter + 1);
-      console.log(refreshCounter);
+
     }
 
       const toggleToday = () => {
