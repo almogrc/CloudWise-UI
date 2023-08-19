@@ -471,7 +471,7 @@ const fetchMachineDataList = async () => {
     />
     <TableBody>
       {machineDataList.map((row) => {
-        const { name, supplier, address, thresholds, alerts} = row;
+        const { name, supplier, dnsAddress, status}: { name: string, supplier: string, dnsAddress: string, status: string } = row;
 
         return (
           <TableRow
@@ -489,14 +489,16 @@ const fetchMachineDataList = async () => {
               </Stack>
             </TableCell>
 
-            <TableCell align="left">{address}</TableCell>
+            <TableCell align="left">{dnsAddress}</TableCell>
 
             <TableCell align="left">
               {supplier === 'Azure' && <img src={azureTableIcon} alt="Azure" height={22} />}
               {supplier === 'AWS' && <img src={awsTableIcon} alt="AWS" height={30} />}
             </TableCell>
 
-         
+            <TableCell align="left">
+              <Label style={{ color: status === 'UP' ? 'green' : 'red' }}>{status}</Label>
+            </TableCell>
 
             <TableCell align="right">
               <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
