@@ -66,9 +66,7 @@ export default function MachineLayout() {
       <StyledSection>
         <Box sx={{ mb: 6 }}/>
         <img src="/assets/illustrations/CloudWiseLogo.png" alt="login" sizes=''/>
-        <a href="" onClick={logout} style={styles.logoutLink}>
-        Logout
-        </a>
+       
       </StyledSection>
     )}
        <Header onOpenNav={() => setOpen(true)} />
