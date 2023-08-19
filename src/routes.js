@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ForecastsPage from './pages/ForecastsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+import AlertsPage from './pages/AlertsPage';
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +20,7 @@ export default function Router() {
       path: '/login',
       element: <LoginPage />, index: true,
     },
+   
     {
       path: '/dashboard',
       element: <DashboardLayout />,
@@ -30,6 +32,10 @@ export default function Router() {
           { path: ':machineId',
           element:<ForecastsPage/>}
           ]
+        },
+        {
+          path: 'alerts',
+          element: <AlertsPage />,
         },
       ],
     },
