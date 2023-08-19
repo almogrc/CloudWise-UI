@@ -1,0 +1,21 @@
+/* ScrollBarComponent.css */
+.slider-container {
+    width: 300px;
+    padding: 20px;
+}
+
+.slider {
+    width: 45%;
+    pointer-events: none;
+}
+
+.slider::-webkit-slider-thumb {
+    pointer-events: auto;
+    /* Enable pointer events on the thumb */
+}
+
+.slider-value {
+    margin-top: 10px;
+    text-align: center;
+    
+}
