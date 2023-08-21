@@ -29,7 +29,7 @@ export default function LoginForm() {
   const handleClick = async () => {
     try{
       const {data, isPending, error} = await fetchPostRequest(`${baseUrl}${loginEndpoint}`, {Email:email,Password:password});
-      window.localStorage.setItem("isLoggedIn", true);
+      window.localStorage.setItem("isLoggedInCloudWise", true);
       navigate('/managerMachines');
     }catch(e){
       setErrorMsg(e.message);
@@ -57,13 +57,13 @@ export default function LoginForm() {
         />
         {errorMsg && <Typography color="red" variant="body2" sx={{ mb: 5 }}>{errorMsg}</Typography>}
       </Stack>
-
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+      <Stack sx={{ mb: 3 }}/>
+      {/* <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <Checkbox name="remember" label="Remember me" />
         <Link variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
-      </Stack>
+      </Stack> */}
 
       <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
         Login

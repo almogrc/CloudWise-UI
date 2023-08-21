@@ -85,7 +85,7 @@ const AlertsPage = (props) => {
 
   return (
     <Helmet>
-        <title> Dashboard | Minimal UI </title>
+        <title> Alerts | CloudWise </title>
       </Helmet>,
 
     <div style={{ textAlign: "center", marginTop: "50px" }}>

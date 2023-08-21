@@ -35,7 +35,7 @@ export default function AccountPopover() {
     setOpen(null);
   };
   const handleLogout = () => {
-    window.localStorage.removeItem("authToken");
+    window.localStorage.removeItem("isLoggedInCloudWise");
     handleClose();
   };
   return (
