@@ -70,7 +70,7 @@ const handleChangeName = (event) => {
   return (
     <>
       <Helmet>
-        <title> Signup | Minimal UI </title>
+        <title> Signup | CloudWise </title>
       </Helmet>
 
       <StyledRoot>

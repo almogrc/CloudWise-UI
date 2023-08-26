@@ -8,18 +8,18 @@ import account from '../../../_mock/account';
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    icon: 'eva:home-fill',
-  },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-  },
+  // {
+  //   label: 'Home',
+  //   icon: 'eva:home-fill',
+  // },
+  // {
+  //   label: 'Profile',
+  //   icon: 'eva:person-fill',
+  // },
+  // {
+  //   label: 'Settings',
+  //   icon: 'eva:settings-2-fill',
+  // },
 ];
 
 // ----------------------------------------------------------------------
@@ -34,7 +34,10 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
-
+  const handleLogout = () => {
+    window.localStorage.removeItem("isLoggedInCloudWise");
+    handleClose();
+  };
   return (
     <>
       <IconButton
@@ -95,9 +98,9 @@ export default function AccountPopover() {
           ))}
         </Stack>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
           Logout
         </MenuItem>
       </Popover>
