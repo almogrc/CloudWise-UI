@@ -66,7 +66,7 @@ export default function ProductsPage() {
               body={body}
               machineName={machineName}
               title="Ram Usage Predict"
-              subheader="(+43%) than last year"
+              subheader=""
             />}
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -75,7 +75,7 @@ export default function ProductsPage() {
             body={body}
             machineName={machineName}
             title="CPU Usage predict"
-            subheader="(+43%) than last year"
+            subheader=""
           />}
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -84,7 +84,7 @@ export default function ProductsPage() {
             body={body}
             machineName={machineName}
             title="Network predict"
-            subheader="(+43%) than last year"
+            subheader=""
           />}
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -93,7 +93,7 @@ export default function ProductsPage() {
             body={body}
             machineName={machineName}
             title="Ram Usage process predict"
-            subheader="(+43%) than last year"
+            subheader=""
           />}
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
@@ -102,7 +102,7 @@ export default function ProductsPage() {
             body={body}
             machineName={machineName}
             title="CPU Usage user process predict"
-            subheader="(+43%) than last year"
+            subheader=""
           />}
         </Grid>
     </>

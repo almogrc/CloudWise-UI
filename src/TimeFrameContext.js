@@ -7,9 +7,11 @@ export const TimeFrameProvider = ({ children }) => {
   const [selectedTimeStartingFrame, setSelectedStartingTimeFrame] = useState(dayjs().startOf('day'));
   const [selectedTimeEndingFrame, setSelectedEndingTimeFrame] = useState(dayjs());
   const [refreshCounter, setRefreshCounter] = useState(0);
+  const [lastDataPointsTimes, setlastDataPointsTimes] = useState([]);
   
   return (
-    <TimeFrameContext.Provider value={{ selectedTimeStartingFrame,selectedTimeEndingFrame, refreshCounter, setSelectedEndingTimeFrame , setSelectedStartingTimeFrame, setRefreshCounter}}>
+    <TimeFrameContext.Provider value={{ selectedTimeStartingFrame,selectedTimeEndingFrame, refreshCounter,lastDataPointsTimes ,
+    setSelectedEndingTimeFrame , setSelectedStartingTimeFrame, setRefreshCounter, setlastDataPointsTimes}}>
       {children}
     </TimeFrameContext.Provider>
   );

@@ -144,7 +144,7 @@ export default function DashboardAppPage() {
               body={body}
               machineName={machineName}
               title="Ram Usage"
-              subheader="(+43%) than last year"
+              subheader=""
             />}
           </Grid>
 
@@ -154,7 +154,7 @@ export default function DashboardAppPage() {
               body={body}
               machineName={machineName}
               title="CPU Usage"
-              subheader="(+43%) than last year"
+              subheader=""
             />}
           </Grid>
 
@@ -164,7 +164,7 @@ export default function DashboardAppPage() {
               body={body}
               machineName={machineName}
               title="Network"
-              subheader="(+43%) than last year"
+              subheader=""
             />}
           </Grid>
 
@@ -174,7 +174,7 @@ export default function DashboardAppPage() {
               body={body}
               machineName={machineName}
               title="Ram Used"
-              subheader="(+43%) than last year"
+              subheader=""
             />}
           </Grid>
 
@@ -184,7 +184,7 @@ export default function DashboardAppPage() {
               body={body}
               machineName={machineName}
               title="CPU user"
-              subheader="(+43%) than last year"
+              subheader=""
             />}
           </Grid>
 
@@ -195,7 +195,7 @@ export default function DashboardAppPage() {
               body={body}
               machineName={machineName}
               title="CPU system"
-              subheader="(+43%) than last year"
+              subheader=""
             />}
           </Grid>
 
@@ -205,7 +205,7 @@ export default function DashboardAppPage() {
               body={body}
               machineName={machineName}
               title="read bytes"
-              subheader="(+43%) than last year"
+              subheader=""
             />}
           </Grid>
 
