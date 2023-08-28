@@ -1,6 +1,6 @@
 export const isDevelopment = true;
 
-export const baseUrl = isDevelopment? "http://localhost:5001/api" : "http://";
+export const baseUrl = isDevelopment? "http://localhost:5001/api" : "http://cloudwiseprod.westeurope.cloudapp.azure.com:5001/api";
 
 export const connectionEndpoint =  "/Connection";
 
@@ -12,7 +12,7 @@ export const virtualMachineEndpoint =  "/VirtualMachine";
 
 export const addVirtualMachineEndpoint = `/VirtualMachine/addVM`;
 
-export const removeVirtualMachineEndpoint =  `/VirtualMachine/removeVM`;
+export const removeVirtualMachineEndpoint =  `/VirtualMachine/RemoveVM`;
 
 export const getAllVMs = '/VirtualMachine/GetAllVMs';
 
@@ -69,6 +69,14 @@ export const CpuUserProcessesPredictUrl = `${baseUrl}${ProcessExporterPredictBas
 export const CpuSystemProcessesPredictUrl = `${baseUrl}${ProcessExporterPredictBase}/CPUSystem`;
 
 export const ReadBytesProcessesPredictUrl = `${baseUrl}${ProcessExporterPredictBase}/ReadBytes`;
+
+// thresholds
+export const Alert = '/machine/alert'
+
+export const GetThresholds = `${Alert}/GetThreshold`;
+
+
+
 
 export const logout = () => {
     window.localStorage.removeItem("authToken");

@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import TableComponnent from "../components/AlertSettingItems/TableComponnent"
 import CheckBoxAlerts from "../components/AlertSettingItems/CheckBoxAlerts";
 import SettingTable from "../components/AlertSettingItems/SettingTable";
+import { fetchGetRequest } from '../utils/getRequest';
+import {GetThresholds, baseUrl } from '../utils/constant';
 
 const DUMMY_DATA = [
   {
@@ -29,7 +32,7 @@ const DUMMY_DATA = [
   },
 ];
 
-const AlertsPage = (props) => {
+export default function AlertsPage (props) {
   const [formData, setFormData] = useState({
     threshHoldsData: DUMMY_DATA,
     EmailPrefData: {
@@ -38,6 +41,10 @@ const AlertsPage = (props) => {
       nonOfAbove: false,
     },
   });
+  const [machineName, setMachineName] = useState(false);
+  const [IsMachineName, setIsMachineName] = useState(false);
+
+  const location = useLocation();
 
   const updateCpuSettingDataHandler = (obj) => {
     setFormData({
@@ -82,6 +89,20 @@ const AlertsPage = (props) => {
       },
     });
   };
+  const getMachineNameFromUrl = () => {
+    const currentPathname = location.pathname;
+    console.log(location.pathname);
+    const pathSegments = currentPathname.split('/');
+    const lastSegment = pathSegments[pathSegments.length - 1];
+    console.log(lastSegment);
+    setMachineName(lastSegment);
+    setIsMachineName(true);
+    console.log(machineName);
+  };
+
+  useEffect(() => {
+    getMachineNameFromUrl();
+  },[]);
 
   return (
     <Helmet>
@@ -92,12 +113,13 @@ const AlertsPage = (props) => {
       <div id="title" style={{ fontSize: "24px", fontWeight: "bold" }}>
         Alert Setting Page
       </div>
-      <div>
-        <SettingTable
-          data={DUMMY_DATA}
+      {IsMachineName && <div>
+         <SettingTable
+          machineId={machineName}
           updateCpuSettingData={updateCpuSettingDataHandler}
         />
       </div>
+      }
       <div>
         <CheckBoxAlerts onCheckBox={onCheckBoxHandler} />
       </div>
@@ -133,4 +155,3 @@ const AlertsPage = (props) => {
   );
 };
 
-export default AlertsPage;
