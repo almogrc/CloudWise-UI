@@ -334,7 +334,7 @@ const fetchMachineDataList = async () => {
   return (
     <>
       <Helmet>
-        <title>User | Minimal UI</title>
+        <title>Machines | CloudWise</title>
       </Helmet>
 
       <Container>

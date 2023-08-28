@@ -16,10 +16,11 @@ import AlertsPage from './pages/AlertsPage';
 // ----------------------------------------------------------------------
 
 export default function Router() {
+  const loggedIn = window.localStorage.getItem("isLoggedInCloudWise");
   const routes = useRoutes([
     {
       path: '/login',
-      element: <LoginPage />, index: true,
+      element: <LoginPage/>,
     },
    
     {
@@ -67,7 +68,7 @@ export default function Router() {
     },
     {
       path: '',
-       element: <Navigate to="/login" replace />,
+       element: loggedIn ? <Navigate to="/managerMachines" replace /> : <Navigate to="/login" replace />, index: true
     },
     {
       path: '*',
