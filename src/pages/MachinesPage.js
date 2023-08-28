@@ -33,7 +33,7 @@ import {
 
 // constants
 
-import { addVirtualMachineEndpoint, getAllVMs, baseUrl } from '../utils/constant';
+import { addVirtualMachineEndpoint, getAllVMs, baseUrl, removeVirtualMachineEndpoint } from '../utils/constant';
 
 // HTTP functions
 
@@ -132,7 +132,7 @@ export default function UserPage() {
   const [selectedSupplier, setSelectedSupplier] = useState(Suppliers[0]);
   const [selectedRow, setSelectedRow] = useState(null);
   const [machineDataList, setMachineDataList] = useState([]);
-
+  const [machineChosen, setMachineChosen] = useState(null);
 const navigate = useNavigate();
 
 const fetchMachineDataList = async () => {
@@ -170,6 +170,9 @@ const fetchMachineDataList = async () => {
   };
   
   const isValidDNS = () => {
+    if(machineDNS === 'localhost'){
+      return true;
+    }
     const pattern = /^(?:(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}$/;
       return pattern.test(machineDNS);
   };
@@ -197,10 +200,12 @@ const fetchMachineDataList = async () => {
     if (!machineDNS || !machineName || !selectedSupplier) {
       setErrorOpen(true);
       setErrorText('Please fill in all the fields.');
-    } else if (!isValidDNS()) {
+     }  
+    else if (!isValidDNS()) {
       setErrorOpen(true);
       setErrorText('Invalid DNS format.');
-    } else if (!isValidMachineName()) {
+    } 
+    else if (!isValidMachineName()) {
       setErrorOpen(true);
       setErrorText('Invalid Machine Name.');
     } else if (!isValidSupplier()) {
@@ -240,14 +245,22 @@ const fetchMachineDataList = async () => {
     setDNS(event.target.value);
     console.log("Value changed:", event.target.value);
   };
-  const handleOpenMenu = (event) => {
+  const handleOpenMenu = (event, rowData) => {
+    console.log(rowData);
     setOpen(event.currentTarget);
+    setMachineChosen(rowData);
+    console.log(machineChosen);
   };
 
   const handleCloseMenu = () => {
     setOpen(null);
   };
-
+  const handleRemoveMachine = async () => {
+    console.log(machineChosen);
+    const {data, isPending, error} = await fetchPostRequest(`${baseUrl}${removeVirtualMachineEndpoint}`, machineChosen);
+    setMachineChosen(null);
+    await fetchMachineDataList();
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -501,7 +514,7 @@ const fetchMachineDataList = async () => {
             </TableCell>
 
             <TableCell align="right">
-              <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+              <IconButton size="large" color="inherit" onClick={(event)=>handleOpenMenu(event, row)}>
                 <Iconify icon={'eva:more-vertical-fill'} />
               </IconButton>
             </TableCell>
@@ -572,8 +585,8 @@ const fetchMachineDataList = async () => {
           },
         }}
       >
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+        <MenuItem onClick={handleRemoveMachine} sx={{ color: 'error.main' }}>
+          <Iconify  icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Remove
         </MenuItem>
       </Popover>
