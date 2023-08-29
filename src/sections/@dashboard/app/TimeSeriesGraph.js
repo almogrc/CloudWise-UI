@@ -29,6 +29,7 @@ export default function TimeSeriesGraph({url, body, machineName, title, subheade
     setlastDataPointsTimes,
   } = useTimeFrame();
 
+
   const fetchChartDataList = async () => {
     const headers = {"Accept": "application/json","Content-Type": "application/json", 'machineId' : machineName};
     console.log(body);
@@ -36,20 +37,37 @@ export default function TimeSeriesGraph({url, body, machineName, title, subheade
     // prepareDataToChart
     const chartDataTmp = [];
     let chartLabel = [];
+    // let demoLabel = [];
     console.log(data);
     console.log(Array.isArray(data));
     if(Array.isArray(data))
     {
       setType(data[0]?.type);
-      chartLabel = data[0]?.dataPoints?.map(x => x.date);
-            for (let i = 0; i < data.length; i+=1) {
-        chartDataTmp.push({name:data[i]?.name, type: 'line', fill: 'solid', data: data[i]?.dataPoints?.map(x => x.value)});
+      chartLabel = data[0]?.dataPoints?.map(x => new Date(x.date).getTime() + 3 * 60 * 60 * 1000);
+      
+      for (let i = 0; i < data.length; i+=1) {
+        chartDataTmp.push({
+          name: data[i]?.name,
+          type: 'line',
+          fill: 'solid',
+          data: data[i]?.dataPoints?.map(x => x.value.toFixed(2))});
       }
     }
     else{
-            setType(data?.type);
-              chartLabel = data?.dataPoints?.map(x => x.date);
-              chartDataTmp.push({name:data?.name, type: 'line', fill: 'solid', data: data?.dataPoints?.map(x => x.value.toFixed(2))});
+      setType(data?.type);
+      chartLabel = data?.dataPoints?.map(x => new Date(x.date).getTime() + 3 * 60 * 60 * 1000);
+      
+      if(data?.critical > 0){
+        chartDataTmp.push(
+          { name: 'Critical', type: 'line', data: Array(chartLabel.length).fill(data?.critical) },
+          { name: 'Warning', type: 'line', data: Array(chartLabel.length).fill(data?.warning) },);
+      }
+      
+      chartDataTmp.push(
+        { name: data?.name, type: 'line', fill: 'solid', data: data?.dataPoints?.map(x => x.value.toFixed(2)) }
+      );   
+
+      
     }
     console.log(chartDataTmp);
     setChartData(chartDataTmp); 

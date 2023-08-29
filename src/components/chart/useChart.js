@@ -27,8 +27,10 @@ export default function useChart(options) {
   const baseOptions = {
     // Colors
     colors: [
-      theme.palette.primary.main,
+      theme.palette.error.dark,
       theme.palette.warning.main,
+      theme.palette.primary.main,
+      theme.palette.warning.darker,
       theme.palette.info.main,
       theme.palette.error.main,
       theme.palette.success.main,
@@ -93,6 +95,7 @@ export default function useChart(options) {
         lines: {
           show: false,
         },
+        
       },
     },
 

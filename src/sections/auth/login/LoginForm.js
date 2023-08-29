@@ -7,7 +7,7 @@ import { loginEndpoint, baseUrl } from '../../../utils/constant';
 import {fetchPostRequest} from '../../../utils/postRequest';
 // components
 import Iconify from '../../../components/iconify';
-
+import { useTimeFrame } from '../../../TimeFrameContext';
 
 
 // ----------------------------------------------------------------------
@@ -19,8 +19,12 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const {
+    setUserEmail,
+  } = useTimeFrame();
   const handleChangeEmail = (event) => {
     setEmail(event.target.value);
+    setUserEmail(event.target.value);
   };
   const handleChangePassword = (event) => {
     setPassword(event.target.value);

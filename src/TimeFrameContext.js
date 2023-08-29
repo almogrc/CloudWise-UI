@@ -7,11 +7,11 @@ export const TimeFrameProvider = ({ children }) => {
   const [selectedTimeStartingFrame, setSelectedStartingTimeFrame] = useState(dayjs().startOf('day'));
   const [selectedTimeEndingFrame, setSelectedEndingTimeFrame] = useState(dayjs());
   const [refreshCounter, setRefreshCounter] = useState(0);
-  const [lastDataPointsTimes, setlastDataPointsTimes] = useState([]);
+  const [userEmail, setUserEmail] = useState("");
   
   return (
-    <TimeFrameContext.Provider value={{ selectedTimeStartingFrame,selectedTimeEndingFrame, refreshCounter,lastDataPointsTimes ,
-    setSelectedEndingTimeFrame , setSelectedStartingTimeFrame, setRefreshCounter, setlastDataPointsTimes}}>
+    <TimeFrameContext.Provider value={{ selectedTimeStartingFrame,selectedTimeEndingFrame, refreshCounter,userEmail ,
+    setSelectedEndingTimeFrame , setSelectedStartingTimeFrame, setRefreshCounter, setUserEmail}}>
       {children}
     </TimeFrameContext.Provider>
   );
