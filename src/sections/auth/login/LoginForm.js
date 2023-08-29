@@ -8,6 +8,7 @@ import {fetchPostRequest} from '../../../utils/postRequest';
 // components
 import Iconify from '../../../components/iconify';
 import { useTimeFrame } from '../../../TimeFrameContext';
+import account from '../../../_mock/account';
 
 
 // ----------------------------------------------------------------------
@@ -25,6 +26,7 @@ export default function LoginForm() {
   const handleChangeEmail = (event) => {
     setEmail(event.target.value);
     setUserEmail(event.target.value);
+    account.email = event.target.value;
   };
   const handleChangePassword = (event) => {
     setPassword(event.target.value);
