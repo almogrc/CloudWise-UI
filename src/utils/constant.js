@@ -1,6 +1,6 @@
-export const isDevelopment = true;
+export const isDevelopment = false;
 
-export const baseUrl = isDevelopment? "http://localhost:5001/api" : "http://cloudwiseprod.westeurope.cloudapp.azure.com:5001/api";
+export const baseUrl = isDevelopment? "http://localhost:5001/api" : "http://server-cloudata.azurewebsites.net/api";
 
 export const connectionEndpoint =  "/Connection";
 

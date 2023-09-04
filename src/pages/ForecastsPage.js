@@ -55,9 +55,9 @@ export default function ProductsPage() {
 
       <Container>
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Products
+          Forecasts
         </Typography>
-        <DateSelector/>
+        
       </Container>
 
       <Grid item xs={12} md={6} lg={6}>
